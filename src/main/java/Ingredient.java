@@ -1,9 +1,19 @@
-public class Ingredient {
+import java.io.*;
+import java.text.SimpleDateFormat;
+
+public class Ingredient implements Serializable{
 
 
     private String nom;
     private int quantite;
     private double tempsCuisson;
+
+
+    Ingredient(String nom, int quantite, double tempsCuisson){
+        this.nom = nom;
+        this.quantite = quantite;
+        this.tempsCuisson = tempsCuisson;
+    }
 
 
     public Ingredient(String nom, double tempsCuisson) {
@@ -33,5 +43,9 @@ public class Ingredient {
 
     public void setTempsCuisson(double tempsCuisson) {
         this.tempsCuisson = tempsCuisson;
+    }
+
+    public String toString(){
+        return nom + " ";
     }
 }
