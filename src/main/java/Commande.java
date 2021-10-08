@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Commande {
@@ -16,7 +17,10 @@ public class Commande {
         this.tempsCommande = 0;
         this.statutCommande = 0;
         this.pourcentageAvancement = 0;
-
+        platList = new ArrayList<>();
+        boissonList = new ArrayList<>();
+        accompagnementList = new ArrayList<>();
+        menuList = new ArrayList<>();
     }
 
     public void addTempsCommande(double d){

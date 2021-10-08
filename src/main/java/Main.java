@@ -14,8 +14,7 @@ public class Main {
 
         Map<Integer,String> accompagnementMap = getSavesByPath("Save\\Accompagnement\\");
         Map<Integer,String> platMap = getSavesByPath("Save\\Plat\\");
-        Map<Integer,String> BoissonMap = getSavesByPath("Save\\Boisson\\");
-        Map<Integer,String> clientMap = getSavesByPath("Save\\Client\\");
+        Map<Integer,String> boissonMap = getSavesByPath("Save\\Boisson\\");
 //        accompagnementMap.forEach((r,t) -> System.out.println(r + "   " + t));
 
         List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
@@ -29,6 +28,7 @@ public class Main {
         cuisine1.start();
         cuisine2.start();
 
+        Commande commande;
 
         Scanner sc = new Scanner(System.in);
         boolean login = false;
@@ -36,10 +36,9 @@ public class Main {
         while (!login){
             System.out.println("Veuillez saisir votre id:");
             login = true;
+            commande = new Commande();
 
             while (login){
-
-
                 System.out.println("""
                         Que voulez vous faire :
                         1 : Commander un menu
@@ -58,28 +57,97 @@ public class Main {
 
                 switch (rep){
                     case 1 -> System.out.println("menu");
-                    case 2 -> System.out.println("accompagnement");
-                    case 3 -> System.out.println("boisson");
-                    case 4 -> System.out.println("plat");
+                    case 2 -> ajouterAccompagnement(accompagnementMap,commande);
+                    case 3 -> ajouterBoisson(boissonMap,commande);
+                    case 4 -> ajouterPlat(platMap,commande);
                     case 5 -> login = false;
                     default -> System.out.println("Veuillez selectionner une option valide");
                 }
 
             }
         }
+        sc.close();
 
     }
 
-    public void ajouterAccompagnement(){
+    public static void ajouterAccompagnement(Map<Integer,String> map,Commande commande){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Quel accompagnement voulez-vous ajouter ? :");
+        map.forEach((i,s) -> System.out.println(i + " " + s));
+        System.out.println(map.size() + " retour");
+        int rep;
+        try {
+            rep = Integer.valueOf(sc.nextLine());
+        } catch (Exception e) {
+            rep = 0;
+        }
+
+        if (rep == map.size()) {
+            return;
+        } else {
+            try {
+                commande.accompagnementList.add(Accompagnement.getAccompagnementByName(map.get(rep)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 
-    public void ajouterPlat(){
+    public static void ajouterPlat(Map<Integer,String> map,Commande commande){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Quel plat voulez-vous ajouter ? :");
+        map.forEach((i,s) -> System.out.println(i + " " + s));
+
+        System.out.println(map.size() + " retour");
+        int rep;
+        try {
+            rep = Integer.valueOf(sc.nextLine());
+        } catch (Exception e) {
+            rep = 0;
+        }
+
+        if (rep == map.size()) {
+            return;
+        } else {
+            try {
+                commande.platList.add(Plat.getPlatByName(map.get(rep)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
 
-    public void ajouterBoisson(){
+    public static void ajouterBoisson(Map<Integer, String> map,Commande commande) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Quel boisson voulez-vous ajouter ? :");
+        map.forEach((i, s) -> System.out.println(i + " " + s));
+        System.out.println(map.size() + " retour");
+        int rep;
+        try {
+            rep = Integer.valueOf(sc.nextLine());
+        } catch (Exception e) {
+            rep = 0;
+        }
 
+        if (rep == map.size()) {
+            return;
+        } else {
+            try {
+                commande.boissonList.add(Boisson.getBoissonByName(map.get(rep)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static Map<Integer,String> getSavesByPath(String path){
