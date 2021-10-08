@@ -5,6 +5,7 @@ public class Accompagnement {
 
     private List<Ingredient> ingredientlist;
     private String nom;
+    private double prix;
 
 
 }

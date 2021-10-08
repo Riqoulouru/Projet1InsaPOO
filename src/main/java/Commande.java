@@ -6,7 +6,7 @@ public class Commande {
     List<Boisson> boissonList;
     List<Accompagnement> accompagnementList;
     List<Menu> menuList;
-
+    private double prixTotal;
 
 
 
