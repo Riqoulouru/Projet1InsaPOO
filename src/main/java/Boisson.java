@@ -5,57 +5,40 @@ public class Boisson implements Serializable {
     private String nom;
     private double prix;
 
-    Boisson(String nom, double prix){
+    Boisson(String nom, double prix) {
         this.nom = nom;
+        this.prix = prix;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
         this.prix = prix;
     }
 
     public void saveItem() throws IOException {
-        FileOutputStream save = new FileOutputStream( "Save\\Boisson\\" + this.nom + ".ser"); //CrÃ©er ou remplace le fichier correspondant au chemin
-        ObjectOutput oos = new ObjectOutputStream(save); //Permet l'ecriture dans le fichier en paramÃ¨tre
+        FileOutputStream save = new FileOutputStream("Save\\Boisson\\" + this.nom + ".ser");
+        ObjectOutput oos = new ObjectOutputStream(save);
 
-        oos.writeObject(this); //Sauvegarde sous forme binaire l'objet (ici il s'agit de 'jeu')
+        oos.writeObject(this);
 
     }
 
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public static Boisson loadItem(String name) throws IOException, ClassNotFoundException {
+    public static Boisson getBoissonByName(String name) throws IOException, ClassNotFoundException {
         File save = new File("Save\\Plat\\" + name + ".ser");
-        FileInputStream charger = new FileInputStream(save); //RÃ©cupÃ©ration du fichier de sauvegarde
-        ObjectInput ois = new ObjectInputStream(charger); //Permet la lecture dans le fichier Ã  charger
+        FileInputStream charger = new FileInputStream(save);
+        ObjectInput ois = new ObjectInputStream(charger);
 
-        return (Boisson) ois.readObject(); //On attribue a la partie actuelle l'objet jeu chargÃ©
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
+        return (Boisson) ois.readObject();
     }
 }

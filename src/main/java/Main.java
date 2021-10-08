@@ -1,16 +1,26 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ *
+ * Attention :
+ *  - Le fichier SAVE correspond en gros à une mini BDD
+ *      Comprennant : les différents aliments / plats / Boisson ... Et les clients.
+ */
 public class Main {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
         InitiliazeAllElements();
     }
 
 
-    public static void InitiliazeAllElements() throws IOException, ClassNotFoundException {
+    /***
+     * Fonction pour la création des produits, etc, si les fichiers n'ont pas déjà été récupérés
+     * Fichier de sauvegarde ->
+     *         Save / {Accompagnement}{...}
+     */
+    public static void InitiliazeAllElements() throws IOException {
         //Raclette
         Ingredient fromageRaclette = new Ingredient("Fromage", 500, 0);
         Ingredient pommeDeTerreRaclette = new Ingredient("Pomme_De_Terre", 200, 10);
@@ -41,15 +51,18 @@ public class Main {
         List<Ingredient> rizotoList = new ArrayList<>(); rizotoList.add(riz); rizotoList.add(zoto);
         Accompagnement rizoto = new Accompagnement("Rizoto", 5.6, rizotoList);
 
+
+        Client cl = new Client(1, "Gilbert", "Montagné");
+
+
         raclette.saveItem();
         pouletFrite.saveItem();
         coca.saveItem();
         eau.saveItem();
         salade.saveItem();
         rizoto.saveItem();
-
-        Plat loadingRacletteTest = Plat.loadItem(raclette.getNom());
-        System.out.println(loadingRacletteTest.getNom());
+        cl.saveItem();
 
     }
+
 }
