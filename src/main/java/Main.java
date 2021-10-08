@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /***
  *
@@ -14,22 +12,104 @@ public class Main {
     public static void main(String[] args) throws IOException {
 //        InitiliazeAllElements();
 
+        Map<Integer,String> accompagnementMap = getSavesByPath("Save\\Accompagnement\\");
+        Map<Integer,String> platMap = getSavesByPath("Save\\Plat\\");
+        Map<Integer,String> BoissonMap = getSavesByPath("Save\\Boisson\\");
+        Map<Integer,String> clientMap = getSavesByPath("Save\\Client\\");
+//        accompagnementMap.forEach((r,t) -> System.out.println(r + "   " + t));
+
+        List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
+        LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
+
+        Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
+        Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
+        Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
+
+        cuisine0.start();
+        cuisine1.start();
+        cuisine2.start();
+
 
         Scanner sc = new Scanner(System.in);
         boolean login = false;
 
         while (!login){
             System.out.println("Veuillez saisir votre id:");
+            login = true;
 
+            while (login){
+
+
+                System.out.println("""
+                        Que voulez vous faire :
+                        1 : Commander un menu
+                        2 : Commander un accompagnement
+                        3 : Commander une boisson
+                        4 : Commander un plat
+                        5 : se déconnecter""");
+
+                int rep;
+                try {
+                    rep = Integer.valueOf(sc.nextLine());
+                } catch (Exception e){
+                    rep = 0;
+                }
+
+
+                switch (rep){
+                    case 1 -> System.out.println("menu");
+                    case 2 -> System.out.println("accompagnement");
+                    case 3 -> System.out.println("boisson");
+                    case 4 -> System.out.println("plat");
+                    case 5 -> login = false;
+                    default -> System.out.println("Veuillez selectionner une option valide");
+                }
+
+            }
         }
-
-
-
-
-
 
     }
 
+    public void ajouterAccompagnement(){
+
+    }
+
+    public void ajouterPlat(){
+
+    }
+
+    public void ajouterBoisson(){
+
+    }
+
+    public static Map<Integer,String> getSavesByPath(String path){
+        File dossier=new File(path);
+        File[] liste_saves=dossier.listFiles();
+        assert liste_saves != null;
+
+        boolean exist = Objects.requireNonNull(liste_saves).length!=0;
+
+        Map<Integer,String> accompagnementMap = new HashMap<>();
+        int i = 0;
+        if (exist) {
+            for (File file : liste_saves) {
+                accompagnementMap.put(i,getRealName(file.getName()));
+                i++;
+            }
+        }
+        return accompagnementMap;
+    }
+
+
+    public static String getRealName(String original_name){
+        String file_name = "";
+        int i = 0;
+        while(original_name.charAt(i) != '.'){
+            file_name += original_name.charAt(i);
+            i++;
+        }
+        return file_name;
+    }
 
     /***
      * Fonction pour la création des produits, etc, si les fichiers n'ont pas déjà été récupérés

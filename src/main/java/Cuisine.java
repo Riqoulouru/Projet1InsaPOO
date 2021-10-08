@@ -28,29 +28,39 @@ public class Cuisine extends Thread{
 
     @Override
     public void run() {
+        try {
 
-        while (arret){
-            if (commandeEnCours.getStatutCommande() == 2) {
-                lancerPreparationCommande();
 
-            }else {
-                commandeEnCours.calculerTemps();
-                double tempsPrep = commandeEnCours.getTempsCommande();
+            while (arret) {
+                if (commandeEnCours.getStatutCommande() == 2) {
+                    lancerPreparationCommande();
 
-                double tempsPourUnPourcent = tempsPrep / 100;
-                while (commandeEnCours.getPourcentageAvancement() <= 100) {
-                    try {
-                        Thread.sleep((long) tempsPourUnPourcent);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                } else {
+                    commandeEnCours.calculerTemps();
+                    double tempsPrep = commandeEnCours.getTempsCommande();
 
-                        commandeEnCours.setPourcentageAvancement(commandeEnCours.getPourcentageAvancement() + 1);
+                    double tempsPourUnPourcent = tempsPrep / 100;
+                    while (commandeEnCours.getPourcentageAvancement() <= 100) {
+                        try {
+                            Thread.sleep((long) tempsPourUnPourcent);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+
+                            commandeEnCours.setPourcentageAvancement(commandeEnCours.getPourcentageAvancement() + 1);
+                        }
+
                     }
 
+
                 }
-
-
             }
+        } catch (Exception e){
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("en attente d'une commande");
         }
 
     }
