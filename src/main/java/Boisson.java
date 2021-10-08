@@ -19,22 +19,6 @@ public class Boisson implements Serializable {
     }
 
 
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
     public static Boisson loadItem(String name) throws IOException, ClassNotFoundException {
         File save = new File("Save\\Plat\\" + name + ".ser");
         FileInputStream charger = new FileInputStream(save); //RÃ©cupÃ©ration du fichier de sauvegarde

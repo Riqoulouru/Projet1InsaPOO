@@ -19,10 +19,9 @@ public class Plat implements Serializable {
 
     public void saveItem() throws IOException {
         FileOutputStream save = new FileOutputStream( "Save\\Plat\\" + this.nom + ".ser"); //CrÃ©er ou remplace le fichier correspondant au chemin
-        ObjectOutput oos = new ObjectOutputStream(save); //Permet l'ecriture dans le fichier en paramÃ¨tre
+        ObjectOutput oos = new ObjectOutputStream(save); //Permet l'ecriture dans le fichier en paramètre
 
-        oos.writeObject(this); //Sauvegarde sous forme binaire l'objet (ici il s'agit de 'jeu')
-
+        oos.writeObject(this); //Sauvegarde sous forme binaire l'objet
     }
 
 
