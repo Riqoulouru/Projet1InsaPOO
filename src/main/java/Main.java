@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /***
  *
@@ -11,7 +12,22 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        InitiliazeAllElements();
+//        InitiliazeAllElements();
+
+
+        Scanner sc = new Scanner(System.in);
+        boolean login = false;
+
+        while (!login){
+            System.out.println("Veuillez saisir votre id:");
+
+        }
+
+
+
+
+
+
     }
 
 
