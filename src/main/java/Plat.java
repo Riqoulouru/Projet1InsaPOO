@@ -19,8 +19,9 @@ public class Plat {
 
     }
 
-
-
+    public List<Ingredient> getIngredientlist() {
+        return ingredientlist;
+    }
     public static Plat loadItem(File save) throws IOException, ClassNotFoundException {
         FileInputStream charger = new FileInputStream(save); //RÃ©cupÃ©ration du fichier de sauvegarde
         ObjectInput ois = new ObjectInputStream(charger); //Permet la lecture dans le fichier Ã  charger
@@ -28,4 +29,23 @@ public class Plat {
         return (Plat) ois.readObject(); //On attribue a la partie actuelle l'objet jeu chargÃ©
     }
 
+    public void setIngredientlist(List<Ingredient> ingredientlist) {
+        this.ingredientlist = ingredientlist;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
 }
