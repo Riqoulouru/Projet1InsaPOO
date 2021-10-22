@@ -5,13 +5,16 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Borne est un sigleton, afin que tous les controllers puissent avoir la même "Borne"
+ * Borne est un singleton, afin que tous les controllers puissent avoir la même "Borne"
  * Ainsi transmettre les données aux pages facilement
  */
 public class Borne {
 
     private static Borne borne;
-    private static Client clientConnected = null;
+    private Client clientConnected = null;
+    private Map<Integer, String> accompagnementMap = null;
+    private Map<Integer, String> platMap = null;
+    private Map<Integer, String> boissonMap = null;
 
     private Borne(){}
 
@@ -22,12 +25,33 @@ public class Borne {
         return borne;
     }
 
+    // ------------------- Getter -------------------
 
-    private void init() throws IOException {
+    public Client getClient(){
+        return clientConnected;
+    }
 
-        Map<Integer,String> accompagnementMap = getSavesByPath("Save/Accompagnement/");
-        Map<Integer,String> platMap = getSavesByPath("Save/Plat/");
-        Map<Integer,String> boissonMap = getSavesByPath("Save/Boisson/");
+    public Map<Integer, String> getAccompagnementMap() {
+        return accompagnementMap;
+    }
+
+    public Map<Integer, String> getPlatMap() {
+        return platMap;
+    }
+
+    public Map<Integer, String> getBoissonMap() {
+        return boissonMap;
+    }
+
+
+    /*
+     * Fonction à exécuter après la connexion d'un client
+     */
+    public void init() {
+
+        accompagnementMap = getSavesByPath("Save/Accompagnement/");
+        platMap = getSavesByPath("Save/Plat/");
+        boissonMap = getSavesByPath("Save/Boisson/");
 
     }
 
@@ -51,9 +75,9 @@ public class Borne {
         return liste_string; //On retourne la liste contenant les noms de chaques saves au format string
     }
 
+
     /*
-    Traitement pour se connecter
-     */
+    Traitement pour se connecter (mode console)
     public static void login() throws IOException, ClassNotFoundException {
         System.out.print((char)27 + "[32m");
 
@@ -108,7 +132,7 @@ public class Borne {
                 
                 Bonjour\040""" + clientConnected.getNom() + " (～￣▽￣)～");
     }
-
+    */
 
     /*
      * Traitement après l'inscription d'un client
@@ -124,6 +148,11 @@ public class Borne {
         return "Bonjour " + prenom + ", votre id sera : " + newIdClient +", veuillez vous connecter.";
     }
 
+    /**
+     * Traitement pour la connection du client
+     *  -> S'il n'est pas dans la liste alors il n'existe pas
+     *  -> Autrement retourner Validate pour rediriger vers la page suivante
+     */
     public String login(int id){
 
         ArrayList<String> idClients = getSavesClient();
@@ -143,6 +172,9 @@ public class Borne {
         return "error";
     }
 
+    /*
+     * Fonction pour récupérer les différents éléments en fonction du type d'éléments voulus
+     */
     public static Map<Integer,String> getSavesByPath(String path){
         File dossier = new File(path);
         File[] liste_saves = dossier.listFiles();
@@ -163,6 +195,9 @@ public class Borne {
     }
 
 
+    /*
+     * Fonction pour récupérer les noms du fichier sans l'extension (.ser)
+     */
     public static String getRealName(String original_name){
         String file_name = "";
         int i = 0;
