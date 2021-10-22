@@ -1,11 +1,14 @@
 package com.example.Projet1InsaPOO.Controller;
 
 import com.example.Projet1InsaPOO.Model.Borne;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/login")
@@ -14,11 +17,22 @@ public class LoginController {
     @GetMapping
     public String getMappingPage(Model model){
 
-        model.addAttribute("Borne", Borne.getInstance());
+        model.addAttribute("borne", Borne.getInstance());
 
         return "login";
 
     }
 
+    @GetMapping("/inscription/{nom}/{prenom}")
+    public ResponseEntity<String> inscriptionNewId(Model model,
+                                                   @PathVariable("nom") String nom,
+                                                   @PathVariable("prenom") String prenom) throws IOException {
+
+
+        System.out.println("YOdodoododoo");
+
+        return ResponseEntity.ok(Borne.getInstance().inscription(nom, prenom));
+
+    }
 
 }
