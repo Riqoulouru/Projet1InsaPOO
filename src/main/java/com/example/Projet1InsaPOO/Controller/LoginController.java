@@ -2,18 +2,18 @@ package com.example.Projet1InsaPOO.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/welcome")
-public class FirstController {
+@RequestMapping("/login")
+public class LoginController {
 
+    @GetMapping
     public String getMappingPage(Model model){
 
-        String valeur = "Bienvenu";
-        model.addAttribute("bienvenu", valeur);
-        return "welcome";
+        return "login";
 
     }
 
