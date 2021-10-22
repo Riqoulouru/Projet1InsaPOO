@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/")
 public class LoginController {
 
     @GetMapping
@@ -28,11 +28,15 @@ public class LoginController {
                                                    @PathVariable("nom") String nom,
                                                    @PathVariable("prenom") String prenom) throws IOException {
 
-
-        System.out.println("YOdodoododoo");
-
         return ResponseEntity.ok(Borne.getInstance().inscription(nom, prenom));
 
     }
 
+    @GetMapping("/login/{id}")
+    public ResponseEntity<String> inscriptionNewId(Model model,
+                                                   @PathVariable("id") int id) throws IOException {
+
+        return ResponseEntity.ok(Borne.getInstance().login(id));
+
+    }
 }
