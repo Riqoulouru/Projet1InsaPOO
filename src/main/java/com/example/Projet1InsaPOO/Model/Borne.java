@@ -31,7 +31,7 @@ public class Borne {
 
     }
 
-
+    //Récupérer la liste des identifiants des clients
     public static ArrayList<String> getSavesClient(){
         File dossier=new File("Save/Client/");
         File[] liste_saves=dossier.listFiles();
@@ -51,6 +51,9 @@ public class Borne {
         return liste_string; //On retourne la liste contenant les noms de chaques saves au format string
     }
 
+    /*
+    Traitement pour se connecter
+     */
     public static void login() throws IOException, ClassNotFoundException {
         System.out.print((char)27 + "[32m");
 
@@ -106,15 +109,20 @@ public class Borne {
                 Bonjour\040""" + clientConnected.getNom() + " (～￣▽￣)～");
     }
 
-    public void inscription(String nom, String prenom){
+
+    /*
+     * Traitement après l'inscription d'un client
+     */
+    public String inscription(String nom, String prenom) throws IOException {
 
         ArrayList<String> idClients = getSavesClient();
         int newIdClient = Integer.parseInt(idClients.get(idClients.size() - 1)) + 1;
+        System.out.print("Votre id sera " + newIdClient);
 
-        System.out.print("Votre id sera " + newIdClient + ", indiquer votre nom/prénom sout la forme : Nom/Prénom : ");
-        String NameFirstName = sc.nextLine();
-        String[] newClientName = NameFirstName.split("/");
-        clientConnected = new Client(newIdClient, newClientName[0], newClientName[1]);
+        clientConnected = new Client(newIdClient, nom, prenom);
+        clientConnected.saveItem();
+
+        return "Bonjour " + prenom + ", votre id sera : " + newIdClient;
     }
 
 
