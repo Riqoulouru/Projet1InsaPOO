@@ -106,17 +106,25 @@ public class Borne {
                 Bonjour\040""" + clientConnected.getNom() + " (～￣▽￣)～");
     }
 
-    public void inscription(String nom, String prenom){
+
+
+    public String login(int id){
 
         ArrayList<String> idClients = getSavesClient();
-        int newIdClient = Integer.parseInt(idClients.get(idClients.size() - 1)) + 1;
+        String newId = String.valueOf(id);
+        if (!idClients.contains(newId)) {
+            return "L'identifiant n'existe pas, veuillez vous inscrire";
+        } else {
+            try {
+                clientConnected = Client.getClientById(Integer.parseInt(newId));
+                return "Bonjour " + clientConnected.getNom() + " (～￣▽￣)～";
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
-        System.out.print("Votre id sera " + newIdClient + ", indiquer votre nom/prénom sout la forme : Nom/Prénom : ");
-        String NameFirstName = sc.nextLine();
-        String[] newClientName = NameFirstName.split("/");
-        clientConnected = new Client(newIdClient, newClientName[0], newClientName[1]);
+        return "error";
     }
-
 
     public static Map<Integer,String> getSavesByPath(String path){
         File dossier = new File(path);

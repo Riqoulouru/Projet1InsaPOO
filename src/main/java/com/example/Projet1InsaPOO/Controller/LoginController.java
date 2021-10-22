@@ -13,6 +13,7 @@ public class LoginController {
     @GetMapping
     public String getMappingPage(Model model){
 
+
         return "login";
 
     }
