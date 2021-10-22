@@ -18,9 +18,7 @@ public class LoginController {
     public String getMappingPage(Model model){
 
         model.addAttribute("borne", Borne.getInstance());
-
         return "login";
-
     }
 
     @GetMapping("/inscription/{nom}/{prenom}")
@@ -29,14 +27,13 @@ public class LoginController {
                                                    @PathVariable("prenom") String prenom) throws IOException {
 
         return ResponseEntity.ok(Borne.getInstance().inscription(nom, prenom));
-
     }
 
     @GetMapping("/login/{id}")
-    public ResponseEntity<String> inscriptionNewId(Model model,
+    public ResponseEntity<String> loginInformations(Model model,
                                                    @PathVariable("id") int id) throws IOException {
 
         return ResponseEntity.ok(Borne.getInstance().login(id));
-
     }
+
 }

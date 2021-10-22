@@ -117,12 +117,11 @@ public class Borne {
 
         ArrayList<String> idClients = getSavesClient();
         int newIdClient = Integer.parseInt(idClients.get(idClients.size() - 1)) + 1;
-        System.out.print("Votre id sera " + newIdClient);
 
         clientConnected = new Client(newIdClient, nom, prenom);
         clientConnected.saveItem();
 
-        return "Bonjour " + prenom + ", votre id sera : " + newIdClient;
+        return "Bonjour " + prenom + ", votre id sera : " + newIdClient +", veuillez vous connecter.";
     }
 
     public String login(int id){
@@ -134,7 +133,8 @@ public class Borne {
         } else {
             try {
                 clientConnected = Client.getClientById(Integer.parseInt(newId));
-                return "Bonjour " + clientConnected.getNom() + " (～￣▽￣)～";
+                return "Validate";
+                //return "Bonjour " + clientConnected.getNom() + " (～￣▽￣)～";
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

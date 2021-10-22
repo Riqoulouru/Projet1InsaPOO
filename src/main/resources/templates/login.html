@@ -6,13 +6,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/moment.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.ui.autocomplete.scroll.min.js"></script>
-    <script src="jquery3.4.1"></script>
-
     <style>
 
         html {
@@ -60,19 +53,26 @@
             return xhr;
         }
 
+        //Traitement pour la connection (pour pouvoir envoyer les donner au java et faire le traitement en java)
         function login(){
+            //Récupérer les données
             var id = document.getElementById('idLogin').value;
+
+            //La requête AJAX
             var xhr = getXMLHttpRequest();
             xhr.onreadystatechange = function() {
 
                 if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
 
-                    console.log(xhr.responseText);
                     data = xhr.responseText;
 
-                    console.log(data.toString());
+                    if (data.toString() == "Validate") {
+                        window.location.replace('/index');
+                    }
+                    else {
+                        document.getElementById('connectionRefusedText').innerHTML = data.toString();
+                    }
 
-                    // document.getElementById("idLogin").innerHTML = data.toString();
                 }
             }
             xhr.open("GET", "/login/" + id , true);
@@ -80,21 +80,21 @@
 
         }
 
-        function inscription(){
 
+        //Traitement pour l'inscription (pour pouvoir envoyer les donner au java et faire le traitement en java)
+        function inscription(){
+            //Récupération des champs
             var nom = document.getElementById('nomInput').value;
             var prenom = document.getElementById('prenomInput').value;
 
+            //Requête AJAX
             var xhr = getXMLHttpRequest();
 
             xhr.onreadystatechange = function() {
 
-                if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+                if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
 
-                    console.log(xhr.responseText);
-                    data = xhr.responseText;
-
-                    console.log(data.toString());
+                    var data = xhr.responseText;
 
                     document.getElementById("newId").innerHTML = data.toString();
                 }
@@ -132,6 +132,8 @@
 
         </div>
     </div>
+
+    <p id="connectionRefusedText"></p>
 
 
     <hr style="color: lightgrey;">
