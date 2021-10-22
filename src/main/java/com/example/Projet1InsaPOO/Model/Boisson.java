@@ -7,7 +7,7 @@ public class Boisson implements Serializable {
     private String nom;
     private double prix;
 
-    Boisson(String nom, double prix) {
+    public Boisson(String nom, double prix) {
         this.nom = nom;
         this.prix = prix;
     }

@@ -11,7 +11,7 @@ public class Accompagnement implements Serializable {
     private double prix;
     private boolean onlyMenu;
 
-    Accompagnement(String nom, double prix, List<Ingredient> ingredientlist,boolean onlyMenu){
+    public Accompagnement(String nom, double prix, List<Ingredient> ingredientlist,boolean onlyMenu){
         this.nom = nom;
         this.prix = prix;
         this.ingredientlist = ingredientlist;

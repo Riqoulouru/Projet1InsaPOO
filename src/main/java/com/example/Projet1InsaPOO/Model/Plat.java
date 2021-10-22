@@ -13,7 +13,7 @@ public class Plat implements Serializable {
     private double prix;
     private boolean onlyMenu;
 
-    Plat(String nom, double prix, List<Ingredient> ingredientlist, boolean onlyMenu){
+    public Plat(String nom, double prix, List<Ingredient> ingredientlist, boolean onlyMenu){
         this.nom = nom;
         this.prix = prix;
         this.ingredientlist = ingredientlist;

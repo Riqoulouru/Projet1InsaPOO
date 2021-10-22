@@ -11,7 +11,7 @@ public class Ingredient implements Serializable{
     private double tempsCuisson;
 
 
-    Ingredient(String nom, int quantite, double tempsCuisson){
+    public Ingredient(String nom, int quantite, double tempsCuisson){
         this.nom = nom;
         this.quantite = quantite;
         this.tempsCuisson = tempsCuisson;
