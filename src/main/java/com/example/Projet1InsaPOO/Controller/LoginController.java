@@ -1,5 +1,6 @@
 package com.example.Projet1InsaPOO.Controller;
 
+import com.example.Projet1InsaPOO.Model.Borne;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ public class LoginController {
     @GetMapping
     public String getMappingPage(Model model){
 
+        model.addAttribute("Borne", Borne.getInstance());
 
         return "login";
 

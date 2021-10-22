@@ -15,12 +15,14 @@ public class Projet1InsaPooApplication {
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(Projet1InsaPooApplication.class, args);
 
+		//Création de la "BDD"
 		initiliazeAllElements();
 
 
 		List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
 		LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
 
+		//Création des cuisines
 		Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
 		Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
 		Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
