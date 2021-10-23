@@ -21,6 +21,7 @@ public class LoginController {
         return "login";
     }
 
+
     @GetMapping("/inscription/{nom}/{prenom}")
     public ResponseEntity<String> inscriptionNewId(Model model,
                                                    @PathVariable("nom") String nom,
@@ -28,6 +29,7 @@ public class LoginController {
 
         return ResponseEntity.ok(Borne.getInstance().inscription(nom, prenom));
     }
+
 
     @GetMapping("/login/{id}")
     public ResponseEntity<String> loginInformations(Model model,
