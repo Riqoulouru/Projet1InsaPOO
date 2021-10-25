@@ -29,16 +29,18 @@
 
     <hr style="margin: 5% 25% 1%">
 
+
     <div class="container-fluid">
         <div class="row">
             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                 th:each="plat: ${plats}" class="col-sm-3 offset-sm-2">
-                <p th:text="${plat.value}"> </p>
-                <!-- ???? IMPOSSIBLE D'AJOUTER UNE IMAGE ????-->
-                <img th:src="${plat.value} + '.png'" alt="Plat" />
+                 th:each="accompagnement: ${accompagnements}" class="col-sm-3 offset-sm-2">
+                <p th:text="${accompagnement.value}"> </p>
+                <img th:src="'images/'+ ${accompagnement.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
             </div>
         </div>
     </div>
+
+
 
 
 </body>

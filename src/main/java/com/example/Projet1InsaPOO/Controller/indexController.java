@@ -18,8 +18,8 @@ public class indexController {
 
         model.addAttribute("borne", borne);
         model.addAttribute("plats", borne.getPlatMap());
-        model.addAttribute("accompagnement", borne.getAccompagnementMap());
-        model.addAttribute("boisson", borne.getBoissonMap());
+        model.addAttribute("accompagnements", borne.getAccompagnementMap());
+        model.addAttribute("boissons", borne.getBoissonMap());
 
         return "index";
     }
