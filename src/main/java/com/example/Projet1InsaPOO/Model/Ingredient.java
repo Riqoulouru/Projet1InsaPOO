@@ -3,32 +3,15 @@ package com.example.Projet1InsaPOO.Model;
 import java.io.*;
 import java.text.SimpleDateFormat;
 
-public class Ingredient implements Serializable{
+public class Ingredient extends Aliment implements Serializable{
 
-
-    private String nom;
     private int quantite;
     private double tempsCuisson;
 
-
     public Ingredient(String nom, int quantite, double tempsCuisson){
-        this.nom = nom;
+        super(nom);
         this.quantite = quantite;
         this.tempsCuisson = tempsCuisson;
-    }
-
-
-    public Ingredient(String nom, double tempsCuisson) {
-        this.nom = nom;
-        this.tempsCuisson = tempsCuisson;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     public int getQuantite() {
@@ -48,6 +31,6 @@ public class Ingredient implements Serializable{
     }
 
     public String toString(){
-        return nom + " ";
+        return getNom() + " ";
     }
 }

@@ -4,15 +4,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Accompagnement implements Serializable {
+public class Accompagnement extends Aliment implements Serializable {
 
     private List<Ingredient> ingredientlist;
-    private String nom;
     private double prix;
     private boolean onlyMenu;
 
     public Accompagnement(String nom, double prix, List<Ingredient> ingredientlist,boolean onlyMenu){
-        this.nom = nom;
+        super(nom);
         this.prix = prix;
         this.ingredientlist = ingredientlist;
         this.onlyMenu = onlyMenu;
@@ -25,14 +24,6 @@ public class Accompagnement implements Serializable {
 
     public void setIngredientlist(List<Ingredient> ingredientlist) {
         this.ingredientlist = ingredientlist;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     public double getPrix() {
@@ -49,14 +40,6 @@ public class Accompagnement implements Serializable {
 
     public void setOnlyMenu(boolean onlyMenu) {
         this.onlyMenu = onlyMenu;
-    }
-
-    public void saveItem() throws IOException {
-        FileOutputStream save = new FileOutputStream( "Save/Accompagnement/" + this.nom + ".ser");
-        ObjectOutput oos = new ObjectOutputStream(save);
-
-        oos.writeObject(this);
-
     }
 
     public static Accompagnement getAccompagnementByName(String name) throws IOException, ClassNotFoundException {

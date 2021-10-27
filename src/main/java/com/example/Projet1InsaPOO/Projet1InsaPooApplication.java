@@ -88,16 +88,15 @@ public class Projet1InsaPooApplication {
 		Client cl = new Client(1, "Gilbert", "Montagné");
 
 
-		raclette.saveItem();
-		pouletFrite.saveItem();
-		coca.saveItem();
-		eau.saveItem();
-		salade.saveItem();
-		rizoto.saveItem();
+		raclette.saveItem("Save/Plat/");
+		pouletFrite.saveItem("Save/Plat/");
+		coca.saveItem("Save/Boisson/");
+		eau.saveItem("Save/Boisson/");
+		salade.saveItem("Save/Accompagnement/");
+		rizoto.saveItem("Save/Accompagnement/");
 		cl.saveItem();
-		burger.saveItem();
-		frites.saveItem();
-
+		burger.saveItem("Save/Plat/");
+		frites.saveItem("Save/Accompagnement/");
 
 	}
 }

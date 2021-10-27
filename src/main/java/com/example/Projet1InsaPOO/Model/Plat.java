@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Plat implements Serializable {
+public class Plat extends Aliment implements Serializable {
 
     private List<Ingredient> ingredientlist;
-    private String nom;
     private double prix;
     private boolean onlyMenu;
 
     public Plat(String nom, double prix, List<Ingredient> ingredientlist, boolean onlyMenu){
-        this.nom = nom;
+        super(nom);
         this.prix = prix;
         this.ingredientlist = ingredientlist;
         this.onlyMenu = onlyMenu;
@@ -27,14 +26,6 @@ public class Plat implements Serializable {
 
     public void setIngredientlist(List<Ingredient> ingredientlist) {
         this.ingredientlist = ingredientlist;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     public double getPrix() {
@@ -51,14 +42,6 @@ public class Plat implements Serializable {
 
     public void setOnlyMenu(boolean onlyMenu) {
         this.onlyMenu = onlyMenu;
-    }
-
-    public void saveItem() throws IOException {
-        FileOutputStream save = new FileOutputStream( "Save/Plat/" + this.nom + ".ser");
-        ObjectOutput oos = new ObjectOutputStream(save);
-
-        oos.writeObject(this);
-
     }
 
 

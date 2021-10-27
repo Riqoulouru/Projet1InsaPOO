@@ -32,4 +32,13 @@ public class Menu implements Serializable {
     public void setAccompagnement(Accompagnement accompagnement) {
         this.accompagnement = accompagnement;
     }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "plat=" + plat.getNom() +
+                ", boisson=" + boisson.getNom() +
+                ", accompagnement=" + accompagnement.getNom() +
+                '}';
+    }
 }
