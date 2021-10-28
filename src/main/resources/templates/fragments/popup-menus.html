@@ -10,7 +10,7 @@
                         <div class="row" id="containerPlatsMenu">
                             <h2 class="col-sm-6 offset-sm-3"> Le plat : </h2>
                             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                                 th:each="plat: ${plats}" th:id="${plat.value} + 'Bis'" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerPlatsMenu')">
+                                 th:each="plat: ${plats}" th:id="${plat.value} + '-Bis'" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerPlatsMenu')">
                                 <p th:text="${plat.value}"> </p>
                                 <img th:src="'images/'+ ${plat.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
                             </div>
@@ -23,7 +23,7 @@
                         <div class="row" id="containerAccompagnementsMenu">
                             <h2 class="col-sm-6 offset-sm-3"> L'accompagnement : </h2>
                             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                                 th:each="accompagnement: ${accompagnements}" th:id="${accompagnement.value} + 'Bis'" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerAccompagnementsMenu')">
+                                 th:each="accompagnement: ${accompagnements}" th:id="${accompagnement.value} + '-Bis'" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerAccompagnementsMenu')">
                                 <p th:text="${accompagnement.value}"> </p>
                                 <img th:src="'images/'+ ${accompagnement.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
                             </div>
@@ -36,7 +36,7 @@
                         <div class="row" id="containerBoissonsMenu">
                             <h2 class="col-sm-6 offset-sm-3"> La boisson : </h2>
                             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                                 th:each="boisson: ${boissons}" th:id="${boisson.value} + 'Bis'" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerBoissonsMenu')">
+                                 th:each="boisson: ${boissons}" th:id="${boisson.value} + '-Bis'" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerBoissonsMenu')">
                                 <p th:text="${boisson.value}"> </p>
                                 <img th:src="'images/'+ ${boisson.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
                             </div>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Confirmer</button>
+                    <button type="button" class="btn btn-success" onclick="validate(['containerPlatsMenu', 'containerAccompagnementsMenu', 'containerBoissonsMenu'])">Confirmer</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeModal('#modal-container-menus', ['containerPlatsMenu', 'containerAccompagnementsMenu', 'containerBoissonsMenu']);">Annuler</button>
                 </div>
             </div>

@@ -39,6 +39,8 @@
     <script th:inline="javascript">
 
 
+        var ajoutCommande = [];
+
         $(document).ready(function () {
 
             $('#select-menus').click(function() {
@@ -59,16 +61,72 @@
 
         });
 
+        //Récupérer le nombre d'élément non sélectionner dans la modal
+        function getnbNotSelected(idParents){
+            var niceComposition = false;
+            idParents.forEach((item, index) => {
+                var nb = 0;
+                var childrens = $("#" + item).children();
+                for(let i=0 ; i<childrens.length ; i++){
+                    var classes = childrens.get(i).className.split(" ");
+                    var selected = (classes.indexOf("notSelected") > -1);
+
+                    //S'il n'a pas la class notSelected -> alors l'ajouter à la commande
+                    if(!selected) {
+                        nb += 1;
+                    }
+                }
+
+                if(nb == 1){
+                    niceComposition = true;
+                }
+                else {
+                    niceComposition = false;
+                }
+            });
+
+            return niceComposition;
+        }
+
+        function getAjoutCommande(){
+            console.log(ajoutCommande);
+        }
+
         function closeModal(id, idParents){
             idParents.forEach((item, index) => {
                 $("#" + item).children().removeClass('notSelected');
             });
             $(id).hide();
+
+            ajoutCommande = [];
         }
 
+
         function selected(element, idParent){
+
             $("#" + idParent).children().addClass('notSelected');
             $('#' + element.id).removeClass('notSelected');
+        }
+
+        function validate(idParents){
+            var niceComposition = getnbNotSelected(idParents);
+            console.log(niceComposition);
+            //Récupérer les éléments sélectionnés
+            idParents.forEach((item, index) => {
+                var childrens = $("#" + item).children();
+                for(let i=0 ; i<childrens.length ; i++){
+                    var classes = childrens.get(i).className.split(" ");
+                    var selected = (classes.indexOf("notSelected") > -1);
+
+                    //S'il n'a pas la class notSelected -> alors l'ajouter à la commande
+                    if(niceComposition && !selected) {
+                        ajoutCommande.push(childrens.get(i).id.split("-")[0]);
+                        getAjoutCommande();
+                    }
+                }
+            });
+
+            ajoutCommande = [];
         }
 
     </script>
