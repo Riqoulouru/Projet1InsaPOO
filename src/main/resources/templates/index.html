@@ -21,6 +21,19 @@
             text-align: center;
         }
 
+        button, h2 {
+            margin: 5%;
+            text-align: center;
+        }
+
+        .modal.custom .modal-dialog{
+            box-shadow: 0px 0px 40px black;
+        }
+
+        .notSelected {
+            opacity: 0.33;
+        }
+
     </style>
 
     <script th:inline="javascript">
@@ -28,33 +41,62 @@
 
         $(document).ready(function () {
 
+            $('#select-menus').click(function() {
+                $('#modal-container-menus').show();
+            });
+
             $('#select-plats').click(function() {
                 $('#modal-container-plats').show();
             });
 
+            $('#select-boissons').click(function() {
+                $('#modal-container-boissons').show();
+            });
+
+            $('#select-accompagnements').click(function() {
+                $('#modal-container-accompagnements').show();
+            });
+
         });
 
-        function closePlat(){
-            $('#modal-container-plats').hide();
+        function closeModal(id, idParents){
+            idParents.forEach((item, index) => {
+                $("#" + item).children().removeClass('notSelected');
+            });
+            $(id).hide();
+        }
+
+        function selected(element, idParent){
+            $("#" + idParent).children().addClass('notSelected');
+            $('#' + element.id).removeClass('notSelected');
         }
 
     </script>
 </head>
+
 <body>
 
-    <h1 th:text="'Bienvenu ' + ${borne.getInstance().getClient().getNom()}"> </h1>
+    <h1 th:text="'Bienvenue ' + ${borne.getInstance().getClient().getNom()}"> </h1>
 
-    <hr style="margin: 5% 25% 1%">
+    <hr style="margin: 5% 25% 3%">
 
-    <button id="select-plats" type="button"> Plats </button>
-
-
+    <div class="container-fluid">
+        <div class="row">
+            <h2 class="col-sm-6 offset-sm-3"> Faites votre choix : </h2>
+            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-menus" type="button"> Commander un menu </button>
+            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-plats" type="button"> Commander un plat seul </button>
+            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-boissons" type="button"> Commander une boisson seul</button>
+            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-accompagnements" type="button"> Commander un accompagnement seul </button>
+        </div>
+    </div>
 
 
     <!-- Modal Window -->
 
+    <div th:replace="fragments/popup-menus :: popup-menus"></div>
     <div th:replace="fragments/popup-plats :: popup-plats"></div>
-
+    <div th:replace="fragments/popup-boissons :: popup-boissons"></div>
+    <div th:replace="fragments/popup-accompagnements :: popup-accompagnements"></div>
 
 
 </body>

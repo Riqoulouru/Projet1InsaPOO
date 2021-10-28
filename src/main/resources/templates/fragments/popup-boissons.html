@@ -1,0 +1,26 @@
+<div th:fragment="popup-boissons">
+    <div class="modal custom" id="modal-container-boissons" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-overlay" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="justify-content: center;">
+                    <h1> Choisissez votre boisson </h1>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" id="containerBoissons">
+                            <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
+                                 th:each="boisson: ${boissons}" th:id="${boisson.value}"  class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerBoissons')">
+                                <p th:text="${boisson.value}"> </p>
+                                <img th:src="'images/'+ ${boisson.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Confirmer</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeModal('#modal-container-boissons', ['containerBoissons']);">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

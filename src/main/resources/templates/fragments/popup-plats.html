@@ -1,24 +1,24 @@
 <div th:fragment="popup-plats">
-    <div class="modal" id="modal-container-plats" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-xl" role="document">
+    <div class="modal custom" id="modal-container-plats" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-overlay" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="justify-content: center;">
                     <h1> Choisissez votre plat </h1>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <div class="row">
+                        <div class="row" id="containerPlats">
                             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                                 th:each="accompagnement: ${accompagnements}" class="col-sm-3 offset-sm-2">
-                                <p th:text="${accompagnement.value}"> </p>
-                                <img th:src="'images/'+ ${accompagnement.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
+                                 th:each="plat: ${plats}" th:id="${plat.value}" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerPlats')">
+                                <p th:text="${plat.value}"> </p>
+                                <img th:src="'images/'+ ${plat.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success">Confirmer</button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closePlat();">Close</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeModal('#modal-container-plats', ['containerPlats']);">Annuler</button>
                 </div>
             </div>
         </div>

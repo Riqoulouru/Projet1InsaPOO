@@ -1,0 +1,26 @@
+<div th:fragment="popup-accompagnements">
+    <div class="modal custom" id="modal-container-accompagnements" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl modal-overlay" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="justify-content: center;">
+                    <h1> Choisissez votre accompagnement </h1>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" id="containerAccompagnements">
+                            <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
+                                 th:each="accompagnement: ${accompagnements}" th:id="${accompagnement.value}" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerAccompagnements')">
+                                <p th:text="${accompagnement.value}"> </p>
+                                <img th:src="'images/'+ ${accompagnement.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Confirmer</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeModal('#modal-container-accompagnements', ['containerAccompagnements']);">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
