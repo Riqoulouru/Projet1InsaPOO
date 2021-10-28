@@ -34,6 +34,10 @@
             opacity: 0.33;
         }
 
+        .commande {
+            text-align: center;
+        }
+
     </style>
 
     <script th:inline="javascript">
@@ -61,7 +65,7 @@
 
         });
 
-        //Récupérer le nombre d'élément non sélectionner dans la modal
+        //Vérifier si les éléments sont biens sélectionnés
         function getnbNotSelected(idParents){
             var niceComposition = true;
             idParents.forEach((item, index) => {
@@ -77,16 +81,22 @@
                     }
                 }
 
+                /*
+                if(niceComposition && nb == 1){
+                    niceComposition = true;
+                }
+                else {
+                    niceComposition = false;
+                }
+                 */
+
                 niceComposition = niceComposition && nb == 1;
             });
 
             return niceComposition;
         }
 
-        function getAjoutCommande(){
-            console.log(ajoutCommande);
-        }
-
+        //Fermeture de la modal
         function closeModal(id, idParents){
             idParents.forEach((item, index) => {
                 $("#" + item).children().removeClass('notSelected');
@@ -96,16 +106,17 @@
             ajoutCommande = [];
         }
 
-
+        //Quand on clique sur une élément changer le style
         function selected(element, idParent){
-
             $("#" + idParent).children().addClass('notSelected');
             $('#' + element.id).removeClass('notSelected');
         }
 
-        function validate(idParents){
+        //Quand bouton confirmé cliqué dans la modale
+        function validate(id, idParents) {
+            var possible = false;
             var niceComposition = getnbNotSelected(idParents);
-            console.log(niceComposition);
+
             //Récupérer les éléments sélectionnés
             idParents.forEach((item, index) => {
                 var childrens = $("#" + item).children();
@@ -113,15 +124,116 @@
                     var classes = childrens.get(i).className.split(" ");
                     var selected = (classes.indexOf("notSelected") > -1);
 
-                    //S'il n'a pas la class notSelected -> alors l'ajouter à la commande
+                    //Ajouter les éléments si la composition est bonne et s'il est sélectionné
                     if(niceComposition && !selected) {
-                        ajoutCommande.push(childrens.get(i).id.split("-")[0]);
-                        getAjoutCommande();
+                        possible = true;
+                        ajoutCommande.push(childrens.get(i).className.split(" ")[0]);
                     }
                 }
             });
 
-            ajoutCommande = [];
+            //Après faire le traitement en java une fois les éléments récupérés
+            if(niceComposition && possible) {
+                addElementToOrder(idParents);
+                closeModal(id, idParents);
+            }
+
+        }
+
+        //Transferrer les données au java
+        function addElementToOrder(idParents) {
+
+            //Si c'est un menu
+            if(idParents.length == 3) {
+
+                $.ajax({
+                    type: "GET",
+                    url : "/index/menu/" + ajoutCommande[0] + "/" + ajoutCommande[1] + "/" + ajoutCommande[2],
+                    success : function(data, textStatus, xhr) {
+                        if(xhr.status == 200){
+                            getCommande();
+                        }
+                    },
+                    error : function(request, error) {
+                        console.error(error);
+                        console.debug(request);
+                    }
+                });
+
+            }
+            else {
+                var type = '';
+                //Si c'est un plat
+                if(idParents[0] == 'containerPlats') {
+                    type = 'plat';
+
+                }
+                //Si c'est un accompagnement
+                else if(idParents[0] == 'containerAccompagnements') {
+                    type = 'accompagnement';
+                }
+                //Si c'est une boisson
+                else{
+                    type = 'boisson';
+                }
+
+                $.ajax({
+                    type: "GET",
+                    url : "/index/"+ type +"/" + ajoutCommande[0],
+                    success : function(data, textStatus, xhr) {
+                        if(xhr.status == 200){
+                            getCommande();
+                        }
+                    },
+                    error : function(request, error) {
+                        console.error(error);
+                        console.debug(request);
+                    }
+                });
+
+            }
+
+        }
+
+        function getCommande() {
+            $.ajax({
+                type: "GET",
+                url : "/index/commande",
+                success : function(data, textStatus, xhr) {
+                    if(xhr.status == 200){
+                        console.log(data);
+
+                        var accompagnementList = data.accompagnementList;
+                        var boissonList = data.boissonList;
+                        var platList = data.platList;
+                        var menuList = data.menuList;
+
+                        var $content = $('#contentOrder');
+                        $content.empty();
+
+                        for( let i=0 ; i<accompagnementList.length ; i++) {
+                            $content.append(`<p> 1x ${accompagnementList[i].nom} </p>`);
+                        }
+
+                        for( let i=0 ; i<boissonList.length ; i++) {
+                            $content.append(`<p> 1x ${boissonList[i].nom} </p>`);
+                        }
+
+                        for( let i=0 ; i<platList.length ; i++) {
+                            $content.append(`<p> 1x ${platList[i].nom} </p>`);
+                        }
+
+                        for( let i=0 ; i<menuList.length ; i++) {
+                            $content.append(`<p> 1x Menu : ${menuList[i].plat.nom} + ${menuList[i].accompagnement.nom} + ${menuList[i].boisson.nom} </p>`);
+                        }
+
+                    }
+                },
+                error : function(request, error) {
+                    console.error(error);
+                    console.debug(request);
+                }
+            });
         }
 
     </script>
@@ -129,17 +241,37 @@
 
 <body>
 
-    <h1 th:text="'Bienvenue ' + ${borne.getInstance().getClient().getNom()}"> </h1>
-
-    <hr style="margin: 5% 25% 3%">
-
     <div class="container-fluid">
         <div class="row">
-            <h2 class="col-sm-6 offset-sm-3"> Faites votre choix : </h2>
-            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-menus" type="button"> Commander un menu </button>
-            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-plats" type="button"> Commander un plat seul </button>
-            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-boissons" type="button"> Commander une boisson seul</button>
-            <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-accompagnements" type="button"> Commander un accompagnement seul </button>
+
+            <div class="col-sm-10">
+                <h1 th:text="'Bienvenue ' + ${borne.getInstance().getClient().getNom()}"> </h1>
+
+                <hr style="margin: 5% 25% 3%">
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <h2 class="col-sm-6 offset-sm-3"> Faites votre choix : </h2>
+                        <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-menus" type="button"> Commander un menu </button>
+                        <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-plats" type="button"> Commander un plat seul </button>
+                        <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-boissons" type="button"> Commander une boisson seul</button>
+                        <button class="col-sm-6 offset-sm-3 btn btn-secondary" id="select-accompagnements" type="button"> Commander un accompagnement seul </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2 commande" style="border-left: 1px solid">
+
+                <p> Commande actuelle : </p>
+                <br>
+
+                <div id="contentOrder">
+
+                </div>
+
+            </div>
+
+
         </div>
     </div>
 

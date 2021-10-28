@@ -16,7 +16,7 @@ public class LoginController {
 
     @GetMapping
     public String getMappingPage(Model model){
-
+        Borne.getInstance().resetCommande();
         model.addAttribute("borne", Borne.getInstance());
         return "login";
     }

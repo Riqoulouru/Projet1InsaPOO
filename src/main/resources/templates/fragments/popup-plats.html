@@ -9,7 +9,7 @@
                     <div class="container-fluid">
                         <div class="row" id="containerPlats">
                             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                                 th:each="plat: ${plats}" th:id="${plat.value}" class="col-sm-3 offset-sm-2" onclick="selected(this, 'containerPlats')">
+                                 th:each="plat: ${plats}" th:id="${plat.value}" th:class="${plat.key} + ' col-sm-3 offset-sm-2'" onclick="selected(this, 'containerPlats')">
                                 <p th:text="${plat.value}"> </p>
                                 <img th:src="'images/'+ ${plat.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
                             </div>
@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="validate(['containerPlats'])">Confirmer</button>
+                    <button type="button" class="btn btn-success" onclick="validate('#modal-container-plats', ['containerPlats'])">Confirmer</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeModal('#modal-container-plats', ['containerPlats']);">Annuler</button>
                 </div>
             </div>

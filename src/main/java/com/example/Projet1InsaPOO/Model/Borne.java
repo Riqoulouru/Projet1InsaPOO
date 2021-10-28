@@ -11,6 +11,7 @@ import java.util.*;
 public class Borne {
 
     private static Borne borne;
+    private Commande commande = new Commande();
     private Client clientConnected = null;
     private Map<Integer, String> accompagnementMap = null;
     private Map<Integer, String> platMap = null;
@@ -27,23 +28,19 @@ public class Borne {
 
     // ------------------- Getter -------------------
 
-    public Client getClient(){
-        return clientConnected;
+    public Client getClient(){ return clientConnected; }
+
+    public Commande getCommande() { return commande; }
+
+    public Map<Integer, String> getAccompagnementMap() { return accompagnementMap; }
+
+    public Map<Integer, String> getPlatMap() { return platMap; }
+
+    public Map<Integer, String> getBoissonMap() { return boissonMap; }
+
+    public void resetCommande() {
+        commande = new Commande();
     }
-
-    public Map<Integer, String> getAccompagnementMap() {
-        return accompagnementMap;
-    }
-
-    public Map<Integer, String> getPlatMap() {
-        return platMap;
-    }
-
-    public Map<Integer, String> getBoissonMap() {
-        return boissonMap;
-    }
-
-
     /*
      * Fonction à exécuter après la connexion d'un client
      */
@@ -53,6 +50,32 @@ public class Borne {
         platMap = getSavesByPath("Save/Plat/");
         boissonMap = getSavesByPath("Save/Boisson/");
 
+    }
+
+    public void addPlatToOrder(int key) throws IOException, ClassNotFoundException {
+        commande.platList.add(Plat.getPlatByName(platMap.get(key)));
+    }
+
+    public void addAccompagnementToOrder(int key) throws IOException, ClassNotFoundException {
+        commande.accompagnementList.add(Accompagnement.getAccompagnementByName(accompagnementMap.get(key)));
+    }
+
+    public void addBoissonToOrder(int key) throws IOException, ClassNotFoundException {
+        commande.boissonList.add(Boisson.getBoissonByName(boissonMap.get(key)));
+    }
+
+    public void addMenuToOrder(int plat, int accompagnement, int boisson) throws IOException, ClassNotFoundException {
+        Plat platMenu = Plat.getPlatByName(platMap.get(plat));
+        Accompagnement accompagnementMenu = Accompagnement.getAccompagnementByName(accompagnementMap.get(accompagnement));
+        Boisson boissonMenu = Boisson.getBoissonByName(boissonMap.get(boisson));
+
+        Menu menu = new Menu();
+
+        menu.setPlat(platMenu);
+        menu.setAccompagnement(accompagnementMenu);
+        menu.setBoisson(boissonMenu);
+
+        commande.menuList.add(menu);
     }
 
     //Récupérer la liste des identifiants des clients
