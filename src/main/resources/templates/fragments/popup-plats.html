@@ -9,9 +9,9 @@
                     <div class="container-fluid">
                         <div class="row" id="containerPlats">
                             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                                 th:each="plat: ${plats}" th:id="${plat.value}" th:class="${plat.key} + ' col-sm-3 offset-sm-2'" onclick="selected(this, 'containerPlats')">
-                                <p th:text="${plat.value}"> </p>
-                                <img th:src="'images/'+ ${plat.value} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
+                                 th:each="plat: ${plats}" th:id="${plat.value.nom}" th:class="${plat.key} + ' col-sm-3 offset-sm-2'" onclick="selected(this, 'containerPlats')">
+                                <p th:text="${plat.value.nom} + ' : ' + ${plat.value.prix} + '€'"> </p>
+                                <img th:src="'images/'+ ${plat.value.nom} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
                             </div>
                         </div>
                     </div>

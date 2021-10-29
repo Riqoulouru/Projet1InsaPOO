@@ -226,6 +226,8 @@
                         for( let i=0 ; i<menuList.length ; i++) {
                             $content.append(`<p> 1x Menu : ${menuList[i].plat.nom} + ${menuList[i].accompagnement.nom} + ${menuList[i].boisson.nom} </p>`);
                         }
+                        console.log(data);
+                        $('#prixTotal').html('Prix total : ' + data.prixTotal + '€');
 
                     }
                 },
@@ -268,6 +270,9 @@
                 <div id="contentOrder">
 
                 </div>
+
+                <br><br><br><br><br><br>
+                <p id="prixTotal" th:text="'Prix total : ' + ${borne.commande.prixTotal} + '€'"> Prix total : </p>
 
             </div>
 

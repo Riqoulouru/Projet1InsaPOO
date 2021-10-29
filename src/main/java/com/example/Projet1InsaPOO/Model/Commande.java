@@ -63,11 +63,14 @@ public class Commande implements Serializable {
     }
 
     public void calculerPrix(){
+        prixTotal = 0;
+        boissonList.forEach((a) -> addPrix(a.getPrix()));
         accompagnementList.forEach((a) -> addPrix(a.getPrix()));
         platList.forEach((p) -> addPrix(p.getPrix()));
         menuList.forEach((a) -> {
             addPrix(a.getAccompagnement().getPrix());
             addPrix(a.getPlat().getPrix());
+            addPrix(a.getBoisson().getPrix());
         });
     }
 

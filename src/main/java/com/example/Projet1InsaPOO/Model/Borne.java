@@ -13,9 +13,9 @@ public class Borne {
     private static Borne borne;
     private Commande commande = new Commande();
     private Client clientConnected = null;
-    private Map<Integer, String> accompagnementMap = null;
-    private Map<Integer, String> platMap = null;
-    private Map<Integer, String> boissonMap = null;
+    private Map<Integer, Accompagnement> accompagnementMap = null;
+    private Map<Integer, Plat> platMap = null;
+    private Map<Integer, Boisson> boissonMap = null;
 
     private Borne(){}
 
@@ -32,11 +32,11 @@ public class Borne {
 
     public Commande getCommande() { return commande; }
 
-    public Map<Integer, String> getAccompagnementMap() { return accompagnementMap; }
+    public Map<Integer, Accompagnement> getAccompagnementMap() { return accompagnementMap; }
 
-    public Map<Integer, String> getPlatMap() { return platMap; }
+    public Map<Integer, Plat> getPlatMap() { return platMap; }
 
-    public Map<Integer, String> getBoissonMap() { return boissonMap; }
+    public Map<Integer, Boisson> getBoissonMap() { return boissonMap; }
 
     public void resetCommande() {
         commande = new Commande();
@@ -44,30 +44,33 @@ public class Borne {
     /*
      * Fonction à exécuter après la connexion d'un client
      */
-    public void init() {
+    public void init() throws IOException, ClassNotFoundException {
 
-        accompagnementMap = getSavesByPath("Save/Accompagnement/");
-        platMap = getSavesByPath("Save/Plat/");
-        boissonMap = getSavesByPath("Save/Boisson/");
+        accompagnementMap = getSavesByPathAccompagnement("Save/Accompagnement/");
+        platMap = getSavesByPathPlat("Save/Plat/");
+        boissonMap = getSavesByPathBoisson("Save/Boisson/");
 
     }
 
     public void addPlatToOrder(int key) throws IOException, ClassNotFoundException {
-        commande.platList.add(Plat.getPlatByName(platMap.get(key)));
+        commande.platList.add(Plat.getPlatByName(platMap.get(key).getNom()));
+        commande.calculerPrix();
     }
 
     public void addAccompagnementToOrder(int key) throws IOException, ClassNotFoundException {
-        commande.accompagnementList.add(Accompagnement.getAccompagnementByName(accompagnementMap.get(key)));
+        commande.accompagnementList.add(Accompagnement.getAccompagnementByName(accompagnementMap.get(key).getNom()));
+        commande.calculerPrix();
     }
 
     public void addBoissonToOrder(int key) throws IOException, ClassNotFoundException {
-        commande.boissonList.add(Boisson.getBoissonByName(boissonMap.get(key)));
+        commande.boissonList.add(Boisson.getBoissonByName(boissonMap.get(key).getNom()));
+        commande.calculerPrix();
     }
 
     public void addMenuToOrder(int plat, int accompagnement, int boisson) throws IOException, ClassNotFoundException {
-        Plat platMenu = Plat.getPlatByName(platMap.get(plat));
-        Accompagnement accompagnementMenu = Accompagnement.getAccompagnementByName(accompagnementMap.get(accompagnement));
-        Boisson boissonMenu = Boisson.getBoissonByName(boissonMap.get(boisson));
+        Plat platMenu = Plat.getPlatByName(platMap.get(plat).getNom());
+        Accompagnement accompagnementMenu = Accompagnement.getAccompagnementByName(accompagnementMap.get(accompagnement).getNom());
+        Boisson boissonMenu = Boisson.getBoissonByName(boissonMap.get(boisson).getNom());
 
         Menu menu = new Menu();
 
@@ -76,6 +79,7 @@ public class Borne {
         menu.setBoisson(boissonMenu);
 
         commande.menuList.add(menu);
+        commande.calculerPrix();
     }
 
     //Récupérer la liste des identifiants des clients
@@ -198,7 +202,7 @@ public class Borne {
     /*
      * Fonction pour récupérer les différents éléments en fonction du type d'éléments voulus
      */
-    public static Map<Integer,String> getSavesByPath(String path){
+    public static Map<Integer, Accompagnement> getSavesByPathAccompagnement(String path) throws IOException, ClassNotFoundException {
         File dossier = new File(path);
         File[] liste_saves = dossier.listFiles();
 
@@ -206,15 +210,53 @@ public class Borne {
 
         boolean exist = Objects.requireNonNull(liste_saves).length != 0;
 
-        Map<Integer,String> accompagnementMap = new HashMap<>();
+        Map<Integer, Accompagnement> map = new HashMap<>();
         int i = 0;
         if (exist) {
             for (File file : liste_saves) {
-                accompagnementMap.put(i,getRealName(file.getName()));
+                map.put(i,Accompagnement.getAccompagnementByName(getRealName(file.getName())));
                 i++;
             }
         }
-        return accompagnementMap;
+        return map;
+    }
+
+    public static Map<Integer, Boisson> getSavesByPathBoisson(String path) throws IOException, ClassNotFoundException {
+        File dossier = new File(path);
+        File[] liste_saves = dossier.listFiles();
+
+        assert liste_saves != null;
+
+        boolean exist = Objects.requireNonNull(liste_saves).length != 0;
+
+        Map<Integer,Boisson> map = new HashMap<>();
+        int i = 0;
+        if (exist) {
+            for (File file : liste_saves) {
+                map.put(i,Boisson.getBoissonByName(getRealName(file.getName())));
+                i++;
+            }
+        }
+        return map;
+    }
+
+    public static Map<Integer, Plat> getSavesByPathPlat(String path) throws IOException, ClassNotFoundException {
+        File dossier = new File(path);
+        File[] liste_saves = dossier.listFiles();
+
+        assert liste_saves != null;
+
+        boolean exist = Objects.requireNonNull(liste_saves).length != 0;
+
+        Map<Integer, Plat> map = new HashMap<>();
+        int i = 0;
+        if (exist) {
+            for (File file : liste_saves) {
+                map.put(i,Plat.getPlatByName(getRealName(file.getName())));
+                i++;
+            }
+        }
+        return map;
     }
 
 

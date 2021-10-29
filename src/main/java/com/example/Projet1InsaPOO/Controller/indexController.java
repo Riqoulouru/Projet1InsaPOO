@@ -16,7 +16,7 @@ import java.io.IOException;
 public class indexController {
 
     @GetMapping
-    public String getMappingPage(Model model) {
+    public String getMappingPage(Model model) throws IOException, ClassNotFoundException {
 
         Borne borne = Borne.getInstance();
         borne.init();
@@ -34,7 +34,7 @@ public class indexController {
 
         Borne.getInstance().addPlatToOrder(i);
         System.out.println(Borne.getInstance().getCommande().getPlatList().get(0).toString());
-        return ResponseEntity.ok(Borne.getInstance().getPlatMap().get(i));
+        return ResponseEntity.ok(Borne.getInstance().getPlatMap().get(i).getNom());
     }
 
 
@@ -43,7 +43,7 @@ public class indexController {
 
         Borne.getInstance().addAccompagnementToOrder(i);
         System.out.println(Borne.getInstance().getCommande().getAccompagnementList().get(0).toString());
-        return ResponseEntity.ok(Borne.getInstance().getAccompagnementMap().get(i));
+        return ResponseEntity.ok(Borne.getInstance().getAccompagnementMap().get(i).getNom());
     }
 
 
@@ -52,7 +52,7 @@ public class indexController {
 
         Borne.getInstance().addBoissonToOrder(i);
         System.out.println(Borne.getInstance().getCommande().getBoissonList().get(0).toString());
-        return ResponseEntity.ok(Borne.getInstance().getBoissonMap().get(i));
+        return ResponseEntity.ok(Borne.getInstance().getBoissonMap().get(i).getNom());
     }
 
     @GetMapping("/menu/{plat}/{accompagnement}/{boisson}")
@@ -62,11 +62,11 @@ public class indexController {
 
         Borne.getInstance().addMenuToOrder(plat, accompagnement, boisson);
         System.out.println(Borne.getInstance().getCommande().getMenuList().get(0).getPlat().toString());
-        return ResponseEntity.ok(Borne.getInstance().getBoissonMap().get(0));
+        return ResponseEntity.ok(Borne.getInstance().getBoissonMap().get(0).getNom());
     }
 
     @GetMapping("/commande")
-    public ResponseEntity<Commande> getCommande(Model model) {
+    public ResponseEntity<Commande> getCommande() {
 
         return ResponseEntity.ok(Borne.getInstance().getCommande());
     }
