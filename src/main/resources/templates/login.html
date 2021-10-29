@@ -6,14 +6,20 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <script src="../../static/bootstrap/js/jquery.min.js" th:src="@{/bootstrap/js/jquery.min.js}"></script>
+    <script src="../../static/bootstrap/js/bootstrap-tooltip.js" th:src="@{/bootstrap/js/bootstrap-tooltip.js}"></script>
+    <script src="../../static/bootstrap/js/bootstrap-confirmation.js"  th:src="@{/bootstrap/js/bootstrap-confirmation.js}"></script>
+    <script src="../../static/js/popupConfirm.js" th:src="@{/js/popupConfirm.js}"></script>
+    <script src="../../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
     <style>
 
         html {
-            background-color: #F7F0EF;
+            background-image: url("images/background.png");
         }
 
         body {
-            border-radius: 8px;
+            border-radius: 4px;
             margin: 7% 20% 10%;
             padding: 2%;
             background-color: white;
@@ -33,50 +39,33 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
-        function getXMLHttpRequest() {
-            var xhr = null;
-            if (window.XMLHttpRequest || window.ActiveXObject) {
-                if (window.ActiveXObject) {
-                    try {
-                        xhr = new ActiveXObject("Msxml2.XMLHTTP");
-                    } catch(e) {
-                        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-                    }
-                } else {
-                    xhr = new XMLHttpRequest();
-                }
-            } else {
-                alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
-                return null;
-            }
 
-            return xhr;
-        }
 
         //Traitement pour la connection (pour pouvoir envoyer les donner au java et faire le traitement en java)
         function login(){
             //Récupérer les données
-            var id = document.getElementById('idLogin').value;
+            var id = $('#idLogin').val();
 
-            //La requête AJAX
-            var xhr = getXMLHttpRequest();
-            xhr.onreadystatechange = function() {
+            $.ajax({
+                type: "GET",
+                url : "/login/" + id,
+                success : function(data, textStatus, xhr) {
+                    if(xhr.status == 200){
 
-                if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+                        if (data.toString() == "Validate") {
+                            window.location.replace('/index');
+                        }
+                        else {
+                            $("#connectionRefusedText").html(data);
+                        }
 
-                    data = xhr.responseText;
-
-                    if (data.toString() == "Validate") {
-                        window.location.replace('/index');
                     }
-                    else {
-                        document.getElementById('connectionRefusedText').innerHTML = data.toString();
-                    }
-
+                },
+                error : function(request, error) {
+                    console.error(error);
+                    console.debug(request);
                 }
-            }
-            xhr.open("GET", "/login/" + id , true);
-            xhr.send();
+            });
 
         }
 
@@ -84,24 +73,24 @@
         //Traitement pour l'inscription (pour pouvoir envoyer les donner au java et faire le traitement en java)
         function inscription(){
             //Récupération des champs
-            var nom = document.getElementById('nomInput').value;
-            var prenom = document.getElementById('prenomInput').value;
+            var nom = $('#nomInput').val();
+            var prenom = $('#prenomInput').val();
 
-            //Requête AJAX
-            var xhr = getXMLHttpRequest();
+            $.ajax({
+                type: "GET",
+                url : "/inscription/" + nom +"/"+ prenom,
+                success : function(data, textStatus, xhr) {
+                    if(xhr.status == 200){
 
-            xhr.onreadystatechange = function() {
+                        $("#newId").html(data);
 
-                if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-
-                    var data = xhr.responseText;
-
-                    document.getElementById("newId").innerHTML = data.toString();
+                    }
+                },
+                error : function(request, error) {
+                    console.error(error);
+                    console.debug(request);
                 }
-            }
-
-            xhr.open("GET", "/inscription/" + nom +"/"+ prenom, true);
-            xhr.send();
+            });
 
         }
 
@@ -111,6 +100,7 @@
 
 </head>
 <body>
+
 
     <div class="container-fluid" style="margin-top: 2%; margin-bottom: 3%;">
         <div class="row">
@@ -133,7 +123,7 @@
         </div>
     </div>
 
-    <p id="connectionRefusedText"></p>
+    <p id="connectionRefusedText" style="color: red;"></p>
 
 
     <hr style="color: lightgrey;">
@@ -167,7 +157,7 @@
         </div>
     </div>
 
-    <p id="newId"></p>
+    <p id="newId" style="color: green;"></p>
 
 
 </body>

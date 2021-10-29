@@ -67,6 +67,39 @@ public class Cuisine extends Thread{
     }
 
 
+    public List<Commande> getCommandesEnCoursDePreparation() {
+        return commandesEnCoursDePreparation;
+    }
 
+    public void setCommandesEnCoursDePreparation(List<Commande> commandesEnCoursDePreparation) {
+        this.commandesEnCoursDePreparation = commandesEnCoursDePreparation;
+    }
 
+    public LinkedList<Commande> getCommandesEnAttenteDePreparation() {
+        return commandesEnAttenteDePreparation;
+    }
+
+    public void setCommandesEnAttenteDePreparation(LinkedList<Commande> commandesEnAttenteDePreparation) {
+        this.commandesEnAttenteDePreparation = commandesEnAttenteDePreparation;
+    }
+
+    public boolean isArret() {
+        return arret;
+    }
+
+    public void setArret(boolean arret) {
+        this.arret = arret;
+    }
+
+    public Commande getCommandeEnCours() {
+        return commandeEnCours;
+    }
+
+    public void setCommandeEnCours(Commande commandeEnCours) {
+        this.commandeEnCours = commandeEnCours;
+    }
+
+    public void addCommandesEnAttenteDePreparation(Commande commande) {
+        commandesEnAttenteDePreparation.add(commande);
+    }
 }

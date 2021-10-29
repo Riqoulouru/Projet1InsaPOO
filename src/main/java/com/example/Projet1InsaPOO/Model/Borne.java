@@ -1,21 +1,28 @@
 package com.example.Projet1InsaPOO.Model;
 
+import com.example.Projet1InsaPOO.Projet1InsaPooApplication;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 /**
+ * La classe borne correspond à la borne sur laquelle le client commande
+ * -> Elle est l'équivalent du Main s'il n'y avait pas d'interface graphique
+ * -> Elle transmet ses données traitées aux controllers qui eux enverront ces données aux pages pour un simple affichage
+ * (Les seuls traitements en js sont les requêtes AJAX pour send/get les données et les traitements pour l'affichage)
  * Borne est un singleton, afin que tous les controllers puissent avoir la même "Borne"
  * Ainsi transmettre les données aux pages facilement
  */
 public class Borne {
 
-    private static Borne borne;
-    private Commande commande = new Commande();
-    private Client clientConnected = null;
-    private Map<Integer, Accompagnement> accompagnementMap = null;
-    private Map<Integer, Plat> platMap = null;
-    private Map<Integer, Boisson> boissonMap = null;
+    private static Borne borne; // Singleton
+    private Commande commande; // -> La commande actuelle sur la borne
+    private Client clientConnected = null; // -> Le client connecté
+    private Map<Integer, Accompagnement> accompagnementMap = null; // -> Tous les accompagnements dans la "BDD"
+    private Map<Integer, Plat> platMenuMap = null; // -> Tous les plats dans la "BDD"
+    private Map<Integer, Plat> platMap = null; // -> Les plats dans la "BDD" qui peuvent être compris hors menu
+    private Map<Integer, Boisson> boissonMap = null; // -> Toutes les boissons dans la "BDD"
 
     private Borne(){}
 
@@ -34,24 +41,43 @@ public class Borne {
 
     public Map<Integer, Accompagnement> getAccompagnementMap() { return accompagnementMap; }
 
+    public Map<Integer, Plat> getPlatMenuMap() { return platMenuMap; }
+
     public Map<Integer, Plat> getPlatMap() { return platMap; }
 
     public Map<Integer, Boisson> getBoissonMap() { return boissonMap; }
 
-    public void resetCommande() {
-        commande = new Commande();
-    }
     /*
-     * Fonction à exécuter après la connexion d'un client
+     * Méthode pour reset la commande quand on est à la page login
+     */
+    public void resetCommande() { commande = new Commande(); }
+
+    /*
+     * Fonction à exécuter après la connexion d'un client -> Récupération des éléments commandables
      */
     public void init() throws IOException, ClassNotFoundException {
 
         accompagnementMap = getSavesByPathAccompagnement("Save/Accompagnement/");
-        platMap = getSavesByPathPlat("Save/Plat/");
+        platMenuMap = getSavesByPathPlat("Save/Plat/");
         boissonMap = getSavesByPathBoisson("Save/Boisson/");
+
+        // Initialiser platMap
+        platMap = new HashMap<>();
+        int key = 0;
+        for(Plat plat : platMenuMap.values()) {
+            if (!plat.isOnlyMenu()) {
+                platMap.put(key, plat);
+            }
+            key++;
+        }
 
     }
 
+    // --------------- Ajout d'éléments dans la commande ---------------
+    /*
+     * 1 : Ajouter l'éléments dans la commande
+     * 2 : Mettre à jour le prix de la commande
+     */
     public void addPlatToOrder(int key) throws IOException, ClassNotFoundException {
         commande.platList.add(Plat.getPlatByName(platMap.get(key).getNom()));
         commande.calculerPrix();
@@ -68,7 +94,7 @@ public class Borne {
     }
 
     public void addMenuToOrder(int plat, int accompagnement, int boisson) throws IOException, ClassNotFoundException {
-        Plat platMenu = Plat.getPlatByName(platMap.get(plat).getNom());
+        Plat platMenu = Plat.getPlatByName(platMenuMap.get(plat).getNom());
         Accompagnement accompagnementMenu = Accompagnement.getAccompagnementByName(accompagnementMap.get(accompagnement).getNom());
         Boisson boissonMenu = Boisson.getBoissonByName(boissonMap.get(boisson).getNom());
 
@@ -80,6 +106,51 @@ public class Borne {
 
         commande.menuList.add(menu);
         commande.calculerPrix();
+    }
+
+    /*
+     * Traitement à appliquer quand le client paye sa commande
+     */
+    public String payer() throws IOException {
+        commande.calculerTemps();
+        commande.calculerPrix();
+
+        clientConnected.addToHistorique(commande);
+        clientConnected.saveItem();
+
+        // À demander
+        Projet1InsaPooApplication.cuisines.forEach(cuisine ->  {
+            cuisine.addCommandesEnAttenteDePreparation(commande);
+        });
+        // Voir avec Basile pour le fonctionnement de la cuisine
+
+        /*
+         * TODO : Traitement avec cuisine
+         *  commandesEnAttenteDePreparation.add(commande);
+         */
+
+        return "Payement de "+ commande.getPrixTotal() +"€ accepté, votre commande a bien été prise en compte. <br>" +
+                "Attente estimé : "+ commande.getTempsCommande() + "minutes <br><br>" +
+                "Sur la page de connexion cliquez sur avancement pour voir l'avancée de voter commande " + "<br>" +
+                "Appuyer sur confirmer pour être déconnecté. <br>";
+    }
+
+
+    /*
+     *Traitement pour modifier la commande
+     *  (Supprimer un élément)
+     */
+    public String removeElement(int index, String type){
+
+        switch (type) {
+            case "plat" -> commande.platList.remove(index);
+            case "boisson" -> commande.boissonList.remove(index);
+            case "accompagnement" -> commande.accompagnementList.remove(index);
+            case "menu" -> commande.menuList.remove(index);
+        }
+        commande.calculerPrix();
+
+        return "done";
     }
 
     //Récupérer la liste des identifiants des clients
@@ -102,73 +173,15 @@ public class Borne {
         return liste_string; //On retourne la liste contenant les noms de chaques saves au format string
     }
 
-
-    /*
-    Traitement pour se connecter (mode console)
-    public static void login() throws IOException, ClassNotFoundException {
-        System.out.print((char)27 + "[32m");
-
-        ArrayList<String> idClients = getSavesClient();
-        Scanner sc = new Scanner(System.in);
-        boolean login = false;
-
-        while(!login) {
-            System.out.println("""
-                    
-                    Que voulez vous faire :
-                    1 : Se connecter
-                    2 : Créer un id""");
-
-            int connection = Integer.parseInt(sc.nextLine());
-            while (connection != 1 && connection != 2) {
-                System.out.println("Veuillez indiquer une réponse valable.");
-                connection = Integer.parseInt(sc.nextLine());
-            }
-
-            //En sortant du switch le client est obligatoirement connecté
-            switch (connection) {
-                // S'il se connecte
-                case 1 -> {
-                    System.out.print("Indiquer votre id : ");
-                    String inputId = sc.nextLine();
-                    //Si l'id n'existe alors recommencer la boucle
-                    if (!idClients.contains(inputId)) {
-                        System.out.println(inputId + " non existant");
-                    }
-                    //Sinon le connecter
-                    else {
-                        clientConnected = Client.getClientById(Integer.parseInt(inputId));
-                        login = true;
-                    }
-                }
-                //S'il crée un compte Client
-                case 2 -> {
-                    //Récupérer le dernier id et lui donner un nom/prénom
-                    int newIdClient = Integer.parseInt(idClients.get(idClients.size() - 1)) + 1;
-                    System.out.print("Votre id sera " + newIdClient + ", indiquer votre nom/prénom sout la forme : Nom/Prénom : ");
-                    String NameFirstName = sc.nextLine();
-                    String[] newClientName = NameFirstName.split("/");
-                    clientConnected = new Client(newIdClient, newClientName[0], newClientName[1]);
-
-                }
-            }
-        }
-        System.out.print((char)27 + "[33m");
-        System.out.println("""
-                ----------------------------
-                
-                Bonjour\040""" + clientConnected.getNom() + " (～￣▽￣)～");
-    }
-    */
-
     /*
      * Traitement après l'inscription d'un client
      */
     public String inscription(String nom, String prenom) throws IOException {
-
+        //Récupération du dernière id + 1
         ArrayList<String> idClients = getSavesClient();
         int newIdClient = Integer.parseInt(idClients.get(idClients.size() - 1)) + 1;
 
+        //Création du client et sauvegarde
         clientConnected = new Client(newIdClient, nom, prenom);
         clientConnected.saveItem();
 
@@ -181,13 +194,17 @@ public class Borne {
      *  -> Autrement retourner Validate pour rediriger vers la page suivante
      */
     public String login(int id){
-
+        //Récupération des idClients
         ArrayList<String> idClients = getSavesClient();
         String newId = String.valueOf(id);
+        //S'il n'existe pas
         if (!idClients.contains(newId)) {
             return "L'identifiant n'existe pas, veuillez vous inscrire";
-        } else {
+        }
+        //S'il existe
+        else {
             try {
+                // Indiquer le client connecté sur la borne actuellement
                 clientConnected = Client.getClientById(Integer.parseInt(newId));
                 return "Validate";
                 //return "Bonjour " + clientConnected.getNom() + " (～￣▽￣)～";
@@ -199,17 +216,18 @@ public class Borne {
         return "error";
     }
 
-    /*
-     * Fonction pour récupérer les différents éléments en fonction du type d'éléments voulus
-     */
+    // --------------- Récupération des éléments ---------------
+
+
     public static Map<Integer, Accompagnement> getSavesByPathAccompagnement(String path) throws IOException, ClassNotFoundException {
+        //Récupérer les fichiers du dossier
         File dossier = new File(path);
         File[] liste_saves = dossier.listFiles();
 
         assert liste_saves != null;
-
         boolean exist = Objects.requireNonNull(liste_saves).length != 0;
 
+        //Ajout des éléments dans la Map
         Map<Integer, Accompagnement> map = new HashMap<>();
         int i = 0;
         if (exist) {
@@ -222,13 +240,14 @@ public class Borne {
     }
 
     public static Map<Integer, Boisson> getSavesByPathBoisson(String path) throws IOException, ClassNotFoundException {
+        //Récupérer les fichiers du dossier
         File dossier = new File(path);
         File[] liste_saves = dossier.listFiles();
 
         assert liste_saves != null;
-
         boolean exist = Objects.requireNonNull(liste_saves).length != 0;
 
+        //Ajout des éléments dans la Map
         Map<Integer,Boisson> map = new HashMap<>();
         int i = 0;
         if (exist) {
@@ -241,13 +260,14 @@ public class Borne {
     }
 
     public static Map<Integer, Plat> getSavesByPathPlat(String path) throws IOException, ClassNotFoundException {
+        //Récupérer les fichiers du dossier
         File dossier = new File(path);
         File[] liste_saves = dossier.listFiles();
 
         assert liste_saves != null;
-
         boolean exist = Objects.requireNonNull(liste_saves).length != 0;
 
+        //Ajout des éléments dans la Map
         Map<Integer, Plat> map = new HashMap<>();
         int i = 0;
         if (exist) {

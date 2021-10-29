@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Commande implements Serializable {
-
+    private static int lastId = -1;
+    private int idCommande;
     List<Plat> platList;
     List<Boisson> boissonList;
     List<Accompagnement> accompagnementList;
@@ -19,6 +20,8 @@ public class Commande implements Serializable {
 
 
     public Commande() {
+        this.idCommande = lastId + 1;
+        lastId += 1;
         this.tempsCommande = 0;
         this.statutCommande = 0;
         this.pourcentageAvancement = 0;
@@ -141,4 +144,6 @@ public class Commande implements Serializable {
     public void setPourcentageAvancement(double pourcentageAvancement) {
         this.pourcentageAvancement = pourcentageAvancement;
     }
+
+    public int getIdCommande() { return idCommande; }
 }

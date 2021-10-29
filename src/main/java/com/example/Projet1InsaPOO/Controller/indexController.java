@@ -5,9 +5,7 @@ import com.example.Projet1InsaPOO.Model.Commande;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -22,6 +20,7 @@ public class indexController {
         borne.init();
 
         model.addAttribute("borne", borne);
+        model.addAttribute("platsMenu", borne.getPlatMenuMap());
         model.addAttribute("plats", borne.getPlatMap());
         model.addAttribute("accompagnements", borne.getAccompagnementMap());
         model.addAttribute("boissons", borne.getBoissonMap());
@@ -29,7 +28,7 @@ public class indexController {
         return "index";
     }
 
-    @GetMapping("/plat/{i}")
+    @PostMapping("/plat/{i}")
     public ResponseEntity<String> addPlatToOrder(@PathVariable("i") int i) throws IOException, ClassNotFoundException {
 
         Borne.getInstance().addPlatToOrder(i);
@@ -38,7 +37,7 @@ public class indexController {
     }
 
 
-    @GetMapping("/accompagnement/{i}")
+    @PostMapping("/accompagnement/{i}")
     public ResponseEntity<String> addAccompagnementToOrder(@PathVariable("i") int i) throws IOException, ClassNotFoundException {
 
         Borne.getInstance().addAccompagnementToOrder(i);
@@ -47,7 +46,7 @@ public class indexController {
     }
 
 
-    @GetMapping("/boisson/{i}")
+    @PostMapping("/boisson/{i}")
     public ResponseEntity<String> addBoissonToOrder(@PathVariable("i") int i) throws IOException, ClassNotFoundException {
 
         Borne.getInstance().addBoissonToOrder(i);
@@ -55,7 +54,7 @@ public class indexController {
         return ResponseEntity.ok(Borne.getInstance().getBoissonMap().get(i).getNom());
     }
 
-    @GetMapping("/menu/{plat}/{accompagnement}/{boisson}")
+    @PostMapping("/menu/{plat}/{accompagnement}/{boisson}")
     public ResponseEntity<String> addMenuToOrder(@PathVariable("plat") int plat,
                                                     @PathVariable("accompagnement") int accompagnement,
                                                     @PathVariable("boisson") int boisson) throws IOException, ClassNotFoundException {
@@ -71,5 +70,18 @@ public class indexController {
         return ResponseEntity.ok(Borne.getInstance().getCommande());
     }
 
+    @GetMapping("/payer")
+    public ResponseEntity<String> payOrder() throws IOException {
+
+        return ResponseEntity.ok(Borne.getInstance().payer());
+    }
+
+    @DeleteMapping("/delete/{index}/{type}")
+    public ResponseEntity<String> removeElement(@PathVariable("index") int index,
+                                @PathVariable("type") String type) {
+
+
+        return ResponseEntity.ok(Borne.getInstance().removeElement(index, type));
+    }
 
 }

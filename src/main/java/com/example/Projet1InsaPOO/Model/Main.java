@@ -19,8 +19,6 @@ public class Main {
         Map<Integer,String> platMap = getSavesByPath("Save/Plat/");
         Map<Integer,String> boissonMap = getSavesByPath("Save/Boisson/");
 
-//        accompagnementMap.forEach((r,t) -> System.out.println(r + "   " + t));
-
         List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
         LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
 

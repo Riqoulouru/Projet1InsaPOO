@@ -10,7 +10,7 @@
                         <div class="row" id="containerPlatsMenu">
                             <h2 class="col-sm-6 offset-sm-3"> Le plat : </h2>
                             <div style="background-color: beige; box-shadow: 1px 1px 12px #555; text-align: center; margin-top: 5%;"
-                                 th:each="plat: ${plats}" th:id="${plat.value.nom} + '-Bis'" th:class="${plat.key} + ' col-sm-3 offset-sm-2'" onclick="selected(this, 'containerPlatsMenu')">
+                                 th:each="plat: ${platsMenu}" th:id="${plat.value.nom} + '-Bis'" th:class="${plat.key} + ' col-sm-3 offset-sm-2'" onclick="selected(this, 'containerPlatsMenu')">
                                 <p th:text="${plat.value.nom} + ' : ' + ${plat.value.prix} + '€'"> </p>
                                 <img th:src="'images/'+ ${plat.value.nom} + '.png'" alt="Plat" style="margin-bottom: 5%"/>
                             </div>
@@ -44,8 +44,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="validate('#modal-container-menus', ['containerPlatsMenu', 'containerAccompagnementsMenu', 'containerBoissonsMenu'])">Confirmer</button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="closeModal('#modal-container-menus', ['containerPlatsMenu', 'containerAccompagnementsMenu', 'containerBoissonsMenu']);">Annuler</button>
+                    <button type="button" class="btn btn-success" style="background-color: #8EAB9C;" onclick="validate('#modal-container-menus', ['containerPlatsMenu', 'containerAccompagnementsMenu', 'containerBoissonsMenu'])">Confirmer</button>
+                    <button type="button" class="btn btn-warning" style="background-color: #ECC597; color: white;" data-dismiss="modal" onclick="closeModal('#modal-container-menus', ['containerPlatsMenu', 'containerAccompagnementsMenu', 'containerBoissonsMenu']);">Annuler</button>
                 </div>
             </div>
         </div>
