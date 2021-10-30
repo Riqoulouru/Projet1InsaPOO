@@ -47,7 +47,7 @@ public class Cuisine extends Thread{
                             Thread.sleep((long) tempsPourUnPourcent );
                             commandeEnCours.setPourcentageAvancement(commandeEnCours.getPourcentageAvancement() + 1);
 //                            System.out.println(commandeEnCours.getPourcentageAvancement());
-                            System.out.println("Commande id : " + commandeEnCours.getIdCommande() + " à " + commandeEnCours.getPourcentageAvancement() + " nom cuisine : " + nom);
+                            System.out.println("(Cuisine : "+ nom + ") Commande id : " + commandeEnCours.getIdCommande() + " à " + commandeEnCours.getPourcentageAvancement() + "%");
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

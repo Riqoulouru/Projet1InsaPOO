@@ -125,8 +125,10 @@ public class Borne {
         clientConnected.saveItem();
 
         // Après une nouvelle commande, réveiller les cuisines qu'une commande est à préparer
-        Projet1InsaPooApplication.cuisines.get(0).addCommandesEnAttenteDePreparation(commande);
-
+        synchronized (Projet1InsaPooApplication.cuisines.get(0).getCommandesEnAttenteDePreparation()){
+            Projet1InsaPooApplication.cuisines.get(0).addCommandesEnAttenteDePreparation(commande);
+            Projet1InsaPooApplication.cuisines.get(0).getCommandesEnAttenteDePreparation().notifyAll();
+        }
 
 
         /*
