@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Commande implements Serializable {
     private static int lastId = -1;
-    private int idCommande;
+    private final int idCommande;
     List<Plat> platList;
     List<Boisson> boissonList;
     List<Accompagnement> accompagnementList;

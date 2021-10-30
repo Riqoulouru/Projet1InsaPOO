@@ -1,5 +1,7 @@
 package com.example.Projet1InsaPOO.Model;
 
+import com.example.Projet1InsaPOO.Projet1InsaPooApplication;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,7 +15,7 @@ public class Main {
     public static Client clientConnected = null;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-
+        Projet1InsaPooApplication.initiliazeAllElements();
 
         Map<Integer,String> accompagnementMap = getSavesByPath("Save/Accompagnement/");
         Map<Integer,String> platMap = getSavesByPath("Save/Plat/");
