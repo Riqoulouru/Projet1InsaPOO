@@ -9,11 +9,13 @@ public class Cuisine extends Thread{
     private LinkedList<Commande> commandesEnAttenteDePreparation;
     private Commande commandeEnCours;
     private boolean arret;
+    private String nom;
 
-    public Cuisine(List<Commande> commandesEnCoursDePreparation, LinkedList<Commande> commandesEnAttenteDePreparation) {
+    public Cuisine(List<Commande> commandesEnCoursDePreparation, LinkedList<Commande> commandesEnAttenteDePreparation, String nom) {
         this.commandesEnCoursDePreparation = commandesEnCoursDePreparation;
         this.commandesEnAttenteDePreparation = commandesEnAttenteDePreparation;
         arret = true;
+        this.nom = nom;
     }
 
 
@@ -45,7 +47,7 @@ public class Cuisine extends Thread{
                             Thread.sleep((long) tempsPourUnPourcent );
                             commandeEnCours.setPourcentageAvancement(commandeEnCours.getPourcentageAvancement() + 1);
 //                            System.out.println(commandeEnCours.getPourcentageAvancement());
-                            System.out.println("Commande id : " + commandeEnCours.getIdCommande() + " à " + commandeEnCours.getPourcentageAvancement());
+                            System.out.println("Commande id : " + commandeEnCours.getIdCommande() + " à " + commandeEnCours.getPourcentageAvancement() + " nom cuisine : " + nom);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -71,7 +73,9 @@ public class Cuisine extends Thread{
                 ex.printStackTrace();
             }
         }
+//        notifyAll();
     }
+
 
     public void arreter(){
         arret = false;

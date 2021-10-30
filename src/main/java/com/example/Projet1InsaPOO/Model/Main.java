@@ -17,7 +17,7 @@ public class Main {
     public static Client clientConnected = null;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Projet1InsaPooApplication.initiliazeAllElements();
+//        Projet1InsaPooApplication.initiliazeAllElements();
 
         Map<Integer,String> accompagnementMap = getSavesByPath("Save/Accompagnement/");
         Map<Integer,String> platMap = getSavesByPath("Save/Plat/");
@@ -28,9 +28,9 @@ public class Main {
 
         List<Cuisine> cuisineList = new ArrayList<>();
 
-        Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
-        Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
-        Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
+        Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation,"une");
+        Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation,"deux");
+        Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation,"trois");
 
         cuisineList.add(cuisine0);
         cuisineList.add(cuisine1);
@@ -59,7 +59,8 @@ public class Main {
                         4 : Commander un plat
                         5 : Payer
                         6 : Modifier commande
-                        7 : se déconnecter""");
+                        7 : Afficher l'historique
+                        8 : se déconnecter""");
 
                 int rep;
                 try {
@@ -96,7 +97,8 @@ public class Main {
 
                     }
                     case 6 -> modifierCommande(commande);
-                    case 7 -> login = false;
+                    case 7 -> afficherHistorique();
+                    case 8 -> login = false;
                     default -> System.out.println("Veuillez selectionner une option valide");
                 }
 
@@ -104,6 +106,10 @@ public class Main {
         }
         sc.close();
 
+    }
+
+    public static void afficherHistorique(){
+        clientConnected.getHistoriqueCommandes().forEach(commande -> System.out.println(commande.toString()));
     }
 
     public static void modifierCommande(Commande commande){
