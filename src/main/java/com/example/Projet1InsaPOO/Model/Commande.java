@@ -143,4 +143,34 @@ public class Commande implements Serializable {
     }
 
     public int getIdCommande() { return idCommande; }
+
+    @Override
+    public String toString() {
+        StringBuilder allPlat = new StringBuilder("");
+        for(Plat p : platList){
+            allPlat.append(" ").append(p.getAffichageProduit());
+        }
+
+        StringBuilder allBoisson = new StringBuilder("");
+        for(Boisson b : boissonList){
+            allBoisson.append(" ").append(b.getAffichageProduit());
+        }
+
+        StringBuilder allAccompagnement = new StringBuilder("");
+        for(Accompagnement a : accompagnementList){
+            allAccompagnement.append(" ").append(a.getAffichageProduit());
+        }
+
+        StringBuilder allMenu = new StringBuilder("");
+        for(Menu m : menuList){
+            allMenu.append(" ").append(m.getAffichageProduit());
+        }
+
+        return "Commande : " +
+                "platList=" + allPlat +
+                ", boissonList=" + allBoisson +
+                ", accompagnementList=" + allAccompagnement +
+                ", menuList=" + allMenu +
+                ", prixTotal=" + prixTotal;
+    }
 }
