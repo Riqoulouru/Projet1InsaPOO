@@ -19,13 +19,13 @@ public class Boisson extends Aliment implements Serializable{
         this.prix = prix;
     }
 
-    public static Boisson getBoissonByName(String name) throws IOException, ClassNotFoundException {
-        File save = new File("Save/Boisson/" + name + ".ser");
-        FileInputStream charger = new FileInputStream(save);
-        ObjectInput ois = new ObjectInputStream(charger);
-
-        return (Boisson) ois.readObject();
-    }
+//    public static Boisson getBoissonByName(String name) throws IOException, ClassNotFoundException {
+//        File save = new File("Save/Boisson/" + name + ".ser");
+//        FileInputStream charger = new FileInputStream(save);
+//        ObjectInput ois = new ObjectInputStream(charger);
+//
+//        return (Boisson) ois.readObject();
+//    }
 
 
 }

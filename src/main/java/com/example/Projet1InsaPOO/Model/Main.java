@@ -225,7 +225,7 @@ public class Main {
             return;
         } else {
             try {
-                menu.setPlat(Plat.getPlatByName(platMap.get(rep)));
+                menu.setPlat((Plat) Plat.getAlimentByName("Save/Plat/",platMap.get(rep)));
                 System.out.println(platMap.get(rep) + " ajouté au menu !");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -247,7 +247,8 @@ public class Main {
             return;
         } else {
             try {
-                menu.setAccompagnement(Accompagnement.getAccompagnementByName(accompagnementMap.get(rep)));
+//                menu.setAccompagnement(Accompagnement.getAccompagnementByName(accompagnementMap.get(rep)));
+                menu.setAccompagnement((Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",accompagnementMap.get(rep)));
                 System.out.println(accompagnementMap.get(rep) + " ajouté au menu !");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -268,7 +269,8 @@ public class Main {
             return;
         } else {
             try {
-                menu.setBoisson(Boisson.getBoissonByName(boissonMap.get(rep)));
+//                menu.setBoisson(Boisson.getBoissonByName(boissonMap.get(rep)));
+                menu.setBoisson((Boisson) Boisson.getAlimentByName("Save/Boisson/",boissonMap.get(rep)));
                 System.out.println(boissonMap.get(rep) + " ajouté au menu !");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -291,7 +293,7 @@ public class Main {
         int var = 0;
         for(int i =0; i < map.size(); i++){
             try {
-                if(!Accompagnement.getAccompagnementByName(map.get(i)).isOnlyMenu()) {
+                if(!((Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",map.get(i))).isOnlyMenu()) {
                     finalMap.put(var, map.get(i));
                     var++;
                 }
@@ -310,7 +312,7 @@ public class Main {
 
         if (rep < finalMap.size() && rep >= 0 ) {
             try {
-                commande.accompagnementList.add(Accompagnement.getAccompagnementByName(finalMap.get(rep)));
+                commande.accompagnementList.add((Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",finalMap.get(rep)));
                 System.out.println(finalMap.get(rep) + " ajouter à la commande");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -411,7 +413,7 @@ public class Main {
         int var = 0;
         for(int i =0; i < map.size(); i++){
             try {
-                if(!Plat.getPlatByName(map.get(i)).isOnlyMenu()) {
+                if(!((Plat) Plat.getAlimentByName("Save/Plat/",map.get(i))).isOnlyMenu()) {
                     finalMap.put(var, map.get(i));
                     var++;
                 }
@@ -430,7 +432,7 @@ public class Main {
 
         if (rep < finalMap.size() && rep >= 0) {
             try {
-                commande.platList.add(Plat.getPlatByName(finalMap.get(rep)));
+                commande.platList.add((Plat) Plat.getAlimentByName("Save/Plat/",finalMap.get(rep)));
                 System.out.println(finalMap.get(rep) + " ajouter à la commande");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -454,7 +456,7 @@ public class Main {
 
         if (rep < map.size() && rep >= 0) {
             try {
-                commande.boissonList.add(Boisson.getBoissonByName(map.get(rep)));
+                commande.boissonList.add((Boisson) Boisson.getAlimentByName("Save/Boisson/",map.get(rep)));
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

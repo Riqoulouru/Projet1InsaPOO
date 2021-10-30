@@ -20,6 +20,15 @@ public abstract class Aliment implements Serializable {
         oos.writeObject(this);
     }
 
+    public static Aliment getAlimentByName(String path,String name) throws IOException, ClassNotFoundException {
+        File save = new File(path + name + ".ser");
+        FileInputStream charger = new FileInputStream(save);
+        ObjectInput ois = new ObjectInputStream(charger);
+
+        return (Aliment) ois.readObject();
+    }
+
+
     @Override
     public String toString() {
         return nom;

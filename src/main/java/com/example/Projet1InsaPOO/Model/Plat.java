@@ -46,11 +46,11 @@ public class Plat extends Aliment implements Serializable {
 
 
 
-    public static Plat getPlatByName(String name) throws IOException, ClassNotFoundException {
-        File save = new File("Save/Plat/" + name + ".ser");
-        FileInputStream charger = new FileInputStream(save);
-        ObjectInput ois = new ObjectInputStream(charger);
-
-        return (Plat) ois.readObject();
-    }
+//    public static Plat getPlatByName(String name) throws IOException, ClassNotFoundException {
+//        File save = new File("Save/Plat/" + name + ".ser");
+//        FileInputStream charger = new FileInputStream(save);
+//        ObjectInput ois = new ObjectInputStream(charger);
+//
+//        return (Plat) ois.readObject();
+//    }
 }

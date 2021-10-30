@@ -79,24 +79,24 @@ public class Borne {
      * 2 : Mettre à jour le prix de la commande
      */
     public void addPlatToOrder(int key) throws IOException, ClassNotFoundException {
-        commande.platList.add(Plat.getPlatByName(platMap.get(key).getNom()));
+        commande.platList.add((Plat) Plat.getAlimentByName("Save/Plat/",platMap.get(key).getNom()));
         commande.calculerPrix();
     }
 
     public void addAccompagnementToOrder(int key) throws IOException, ClassNotFoundException {
-        commande.accompagnementList.add(Accompagnement.getAccompagnementByName(accompagnementMap.get(key).getNom()));
+        commande.accompagnementList.add((Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",accompagnementMap.get(key).getNom()));
         commande.calculerPrix();
     }
 
     public void addBoissonToOrder(int key) throws IOException, ClassNotFoundException {
-        commande.boissonList.add(Boisson.getBoissonByName(boissonMap.get(key).getNom()));
+        commande.boissonList.add((Boisson) Boisson.getAlimentByName("Save/Boisson/",boissonMap.get(key).getNom()));
         commande.calculerPrix();
     }
 
     public void addMenuToOrder(int plat, int accompagnement, int boisson) throws IOException, ClassNotFoundException {
-        Plat platMenu = Plat.getPlatByName(platMenuMap.get(plat).getNom());
-        Accompagnement accompagnementMenu = Accompagnement.getAccompagnementByName(accompagnementMap.get(accompagnement).getNom());
-        Boisson boissonMenu = Boisson.getBoissonByName(boissonMap.get(boisson).getNom());
+        Plat platMenu = (Plat) Plat.getAlimentByName("Save/Plat/",platMenuMap.get(plat).getNom());
+        Accompagnement accompagnementMenu = (Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",accompagnementMap.get(accompagnement).getNom());
+        Boisson boissonMenu = (Boisson) Boisson.getAlimentByName("Save/Boisson/",boissonMap.get(boisson).getNom());
 
         Menu menu = new Menu();
 
@@ -232,7 +232,7 @@ public class Borne {
         int i = 0;
         if (exist) {
             for (File file : liste_saves) {
-                map.put(i,Accompagnement.getAccompagnementByName(getRealName(file.getName())));
+                map.put(i,(Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",getRealName(file.getName())));
                 i++;
             }
         }
@@ -252,7 +252,7 @@ public class Borne {
         int i = 0;
         if (exist) {
             for (File file : liste_saves) {
-                map.put(i,Boisson.getBoissonByName(getRealName(file.getName())));
+                map.put(i,(Boisson) Boisson.getAlimentByName("Save/Boisson/",getRealName(file.getName())));
                 i++;
             }
         }
@@ -272,7 +272,7 @@ public class Borne {
         int i = 0;
         if (exist) {
             for (File file : liste_saves) {
-                map.put(i,Plat.getPlatByName(getRealName(file.getName())));
+                map.put(i,(Plat) Plat.getAlimentByName("Save/Plat/",getRealName(file.getName())));
                 i++;
             }
         }

@@ -33,4 +33,5 @@ public class Ingredient extends Aliment implements Serializable{
     public String toString(){
         return getNom() + " ";
     }
+
 }
