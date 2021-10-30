@@ -11,7 +11,9 @@ import java.util.*;
  *  - Le fichier SAVE correspond en gros à une mini BDD
  *      Comprennant : les différents aliments / plats / Boisson ... Et les clients.
  */
+
 public class Main {
+
     public static Client clientConnected = null;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -121,7 +123,7 @@ public class Main {
 //        Map<Integer,String> commandMap = new HashMap<>();
         int var = 0;
 
-        Map<Integer,Object> commandMap = new HashMap<>();
+        Map<Integer,Produit> commandMap = new HashMap<>();
 
         for (Boisson b : commande.getBoissonList()){
             commandMap.put(var,b);
@@ -144,47 +146,31 @@ public class Main {
         if(var == 0) {
             System.out.println("Votre commande est vide");
         } else {
-            switch (rep) {
-                case 1 -> {
-                    int repElementASuppr;
-                    System.out.println("Que voulez-vous supprimer ?");
-                    commandMap.forEach((i, s) -> System.out.println(i + " " + s.toString()));
-                    System.out.println(commandMap.size() + " annuler la suppression");
+            if(rep == 1){
+                int repElementASuppr;
+                System.out.println("Que voulez-vous supprimer ?");
+                commandMap.forEach((i, s) -> System.out.println(i + " " + s.getAffichageProduit()));
+                System.out.println(commandMap.size() + " annuler la suppression");
 
-                    try {
-                        repElementASuppr = Integer.valueOf(sc.nextLine());
-                    } catch (Exception e) {
-                        repElementASuppr = 0;
-                    }
-
-
-
-                    int boissonSize = commande.getBoissonList().size();
-                    int platSize = commande.getPlatList().size();
-                    int accompagnementSize = commande.getAccompagnementList().size();
-                    int menuSize = commande.getMenuList().size();
-
-
-                    if (repElementASuppr != commandMap.size()) {
-
-                        if(commandMap.get(repElementASuppr) instanceof Boisson) commande.getBoissonList().remove(repElementASuppr);
-                        if(commandMap.get(repElementASuppr) instanceof Plat) commande.getPlatList().remove(repElementASuppr - commande.getBoissonList().size());
-                        if(commandMap.get(repElementASuppr) instanceof Accompagnement) commande.getAccompagnementList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size());
-                        if(commandMap.get(repElementASuppr) instanceof Menu) commande.getMenuList().remove(repElementASuppr - (commande.getBoissonList().size() + commande.getPlatList().size() + commande.getAccompagnementList().size()));
-
-//                        if (repElementASuppr > boissonSize && repElementASuppr <= boissonSize + platSize && platSize != 0)
-//                            commande.getPlatList().remove(repElementASuppr - commande.getBoissonList().size());
-//                        if (repElementASuppr > boissonSize + platSize && repElementASuppr <= accompagnementSize + boissonSize + platSize && accompagnementSize != 0)
-//                            commande.getAccompagnementList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size());
-//                        if (repElementASuppr > accompagnementSize + boissonSize + platSize && repElementASuppr <= menuSize + accompagnementSize + boissonSize + platSize)
-//                            commande.getMenuList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size() + commande.getAccompagnementList().size());
-                    }
-
-                    System.out.println(commandMap.get(repElementASuppr) + " a été supprimé de la commande");
-
+                try {
+                    repElementASuppr = Integer.valueOf(sc.nextLine());
+                } catch (Exception e) {
+                    repElementASuppr = 0;
                 }
+
+                if (repElementASuppr != commandMap.size()) {
+
+                    if(commandMap.get(repElementASuppr) instanceof Boisson) commande.getBoissonList().remove(repElementASuppr);
+                    if(commandMap.get(repElementASuppr) instanceof Plat) commande.getPlatList().remove(repElementASuppr - commande.getBoissonList().size());
+                    if(commandMap.get(repElementASuppr) instanceof Accompagnement) commande.getAccompagnementList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size());
+                    if(commandMap.get(repElementASuppr) instanceof Menu) commande.getMenuList().remove(repElementASuppr - (commande.getBoissonList().size() + commande.getPlatList().size() + commande.getAccompagnementList().size()));
+                }
+
+                System.out.println(commandMap.get(repElementASuppr) + " a été supprimé de la commande");
+
             }
         }
+
     }
 
     public static Map<Integer,String> getSavesByPath(String path){

@@ -2,7 +2,7 @@ package com.example.Projet1InsaPOO.Model;
 
 import java.io.*;
 
-public abstract class Aliment implements Serializable {
+public abstract class Aliment implements Serializable,Produit {
 
     private final String nom;
 
@@ -28,9 +28,8 @@ public abstract class Aliment implements Serializable {
         return (Aliment) ois.readObject();
     }
 
-
     @Override
-    public String toString() {
-        return nom;
+    public String getAffichageProduit() {
+        return getNom();
     }
 }

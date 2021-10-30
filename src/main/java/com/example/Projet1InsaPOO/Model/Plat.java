@@ -44,8 +44,6 @@ public class Plat extends Aliment implements Serializable {
         this.onlyMenu = onlyMenu;
     }
 
-
-
 //    public static Plat getPlatByName(String name) throws IOException, ClassNotFoundException {
 //        File save = new File("Save/Plat/" + name + ".ser");
 //        FileInputStream charger = new FileInputStream(save);

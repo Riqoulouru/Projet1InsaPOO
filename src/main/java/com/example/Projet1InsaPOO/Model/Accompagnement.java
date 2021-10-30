@@ -42,6 +42,7 @@ public class Accompagnement extends Aliment implements Serializable {
         this.onlyMenu = onlyMenu;
     }
 
+
 //    public static Accompagnement getAccompagnementByName(String name) throws IOException, ClassNotFoundException {
 //        File save = new File("Save/Accompagnement/" + name + ".ser");
 //        FileInputStream charger = new FileInputStream(save);

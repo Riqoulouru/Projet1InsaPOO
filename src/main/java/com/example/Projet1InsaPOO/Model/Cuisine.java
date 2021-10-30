@@ -69,10 +69,6 @@ public class Cuisine extends Thread{
                 synchronized (commandesEnAttenteDePreparation){
                     commandesEnAttenteDePreparation.wait();
                 }
-
-
-
-
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

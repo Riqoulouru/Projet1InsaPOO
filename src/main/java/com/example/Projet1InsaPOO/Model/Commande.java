@@ -45,9 +45,6 @@ public class Commande implements Serializable {
         }));
         menuList.forEach((a) -> {
             System.out.println(a.getAccompagnement().getNom());
-
-
-
             a.getAccompagnement().getIngredientlist().forEach((i) -> {
                 addTempsCommande(i.getTempsCuisson());
                 System.out.println(i.getNom());
