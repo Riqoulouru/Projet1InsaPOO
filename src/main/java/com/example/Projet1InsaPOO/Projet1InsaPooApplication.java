@@ -25,9 +25,9 @@ public class Projet1InsaPooApplication {
 		LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
 
 		//Création des cuisines
-		Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation, "une"); cuisines.add(cuisine0);
-		Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation, "deux"); cuisines.add(cuisine1);
-		Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation, "trois"); cuisines.add(cuisine2);
+		Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation, "1"); cuisines.add(cuisine0);
+		Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation, "2"); cuisines.add(cuisine1);
+		Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation, "3"); cuisines.add(cuisine2);
 
 		for(Cuisine cuisine : cuisines) {
 			cuisine.start();
