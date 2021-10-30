@@ -4,6 +4,8 @@ import com.example.Projet1InsaPOO.Projet1InsaPooApplication;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -115,14 +117,17 @@ public class Borne {
         commande.calculerTemps();
         commande.calculerPrix();
 
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        commande.setDateValidation(myDateObj.format(myFormatObj));
+
         clientConnected.addToHistorique(commande);
         clientConnected.saveItem();
 
-        // À demander
-        Projet1InsaPooApplication.cuisines.forEach(cuisine ->  {
-            cuisine.addCommandesEnAttenteDePreparation(commande);
-        });
-        // Voir avec Basile pour le fonctionnement de la cuisine
+        // Après une nouvelle commande, réveiller les cuisines qu'une commande est à préparer
+        Projet1InsaPooApplication.cuisines.get(0).addCommandesEnAttenteDePreparation(commande);
+
+
 
         /*
          * TODO : Traitement avec cuisine

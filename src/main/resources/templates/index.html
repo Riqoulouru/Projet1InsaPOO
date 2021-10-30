@@ -60,6 +60,7 @@
                 $('#modal-container-accompagnements').show();
             });
 
+
         });
 
         //Vérifier si les éléments sont biens sélectionnés
@@ -205,7 +206,6 @@
                         var boissonList = data.boissonList;
                         var platList = data.platList;
                         var menuList = data.menuList;
-                        console.log(data.idCommande);
 
                         var $content = $('#contentOrder');
                         $content.empty();
@@ -339,6 +339,89 @@
 
         }
 
+        //Fonction pour l'affichage de l'historique des menus
+        function historique() {
+
+            //Récupération du client
+            var client = [[${client}]];
+            console.log(client);
+
+            var $content = $("#historique");
+            $content.empty();
+
+            //Pour toutes les commandes du client
+            for(let i=0 ; i<client.historiqueCommandes.length ; i++) {
+                var commande = client.historiqueCommandes[i];
+                var $row = $(`<div class="row"></div>`);
+
+                //Créer une table
+                var $table = $(`<table style="text-align: center;" class="col-sm-8"></table>`)
+                var $thead = $(`<thead>
+                                <tr>
+                                  <th scope="col">Menu</th>
+                                  <th scope="col">Plat</th>
+                                  <th scope="col">Accompagnement</th>
+                                  <th scope="col">Boisson</th>
+                                </tr>
+                             </thead>
+                            `);
+                $table.append($thead);
+
+                //Ajouter tous les éléments de la commande dans le tableau
+                //Les menus
+                for(let j=0 ; j<commande.menuList.length ; j++) {
+                    $table.append(`<tr>
+                                    <td> OK </td>
+                                    <td>${commande.menuList[j].plat.nom}</td>
+                                    <td>${commande.menuList[j].accompagnement.nom}</td>
+                                    <td>${commande.menuList[j].boisson.nom}</td>
+                                </tr>`);
+                }
+
+                //Les plats uniques
+                for(let j=0 ; j<commande.platList.length ; j++) {
+                    $table.append(`<tr>
+                                    <td> X </td>
+                                    <td>${commande.platList[j].nom}</td>
+                                    <td> X </td>
+                                    <td> X </td>
+                                </tr>`);
+                }
+
+                //Les accompagnements uniques
+                for(let j=0 ; j<commande.accompagnementList.length ; j++) {
+                    $table.append(`<tr>
+                                    <td> X </td>
+                                    <td> X </td>
+                                    <td>${commande.accompagnementList[j].nom}</td>
+                                    <td> X </td>
+                                </tr>`);
+                }
+
+                //Les boissons uniques
+                for(let j=0 ; j<commande.boissonList.length ; j++) {
+                    $table.append(`<tr>
+                                    <td> X </td>
+                                    <td> X </td>
+                                    <td> X </td>
+                                    <td>${commande.boissonList[j].nom}</td>
+                                </tr>`);
+                }
+
+
+                //Ajouter  les éléments à la div
+                $row.append(`<p class="col-sm-4"> Le ${client.historiqueCommandes[i].dateValidation} </p>`)
+                $row.append($table);
+
+                $content.append($row);
+                $content.append(`<hr>`)
+            }
+
+
+
+            $("#modal-container-historique").show();
+        }
+
     </script>
 </head>
 
@@ -408,11 +491,13 @@
         <div th:replace="fragments/popup-accompagnements :: popup-accompagnements"></div>
         <div th:replace="fragments/popup-payement :: popup-payement"></div>
         <div th:replace="fragments/popup-modifier :: popup-modifier"></div>
+        <div th:replace="fragments/popup-historique :: popup-historique"></div>
 
         <footer>
             <div class="container-fluid">
                 <div class="row">
-                    <button class="col-sm-2 offset-sm-4 btn btn-danger" style="background-color: #C2123A;" id="logout" onclick="window.location.replace('/');" type="button"> Se déconnecter </button>
+                    <button class="col-sm-3 offset-sm-1 btn btn-warning" style="color: white; background-color: #ECC597;" id="historic" onclick="historique()" type="button"> Historique des commandes </button>
+                    <button class="col-sm-3 offset-sm-1 btn btn-danger" style="background-color: #C2123A;" id="logout" onclick="window.location.replace('/');" type="button"> Se déconnecter </button>
                 </div>
             </div>
         </footer>

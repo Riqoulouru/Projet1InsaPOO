@@ -3,6 +3,7 @@ package com.example.Projet1InsaPOO.Model;
 import com.example.Projet1InsaPOO.Model.Plat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Commande implements Serializable {
     private double tempsCommande;
     private int statutCommande;
     private double pourcentageAvancement;
-
+    private String dateValidation;
 
     public Commande() {
         this.idCommande = lastId + 1;
@@ -146,4 +147,13 @@ public class Commande implements Serializable {
     }
 
     public int getIdCommande() { return idCommande; }
+
+    public String getDateValidation() {
+        return dateValidation;
+    }
+
+    public void setDateValidation(String dateValidation) {
+        this.dateValidation = dateValidation;
+    }
+
 }

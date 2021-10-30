@@ -24,6 +24,7 @@ public class indexController {
         model.addAttribute("plats", borne.getPlatMap());
         model.addAttribute("accompagnements", borne.getAccompagnementMap());
         model.addAttribute("boissons", borne.getBoissonMap());
+        model.addAttribute("client", borne.getClient());
 
         return "index";
     }
