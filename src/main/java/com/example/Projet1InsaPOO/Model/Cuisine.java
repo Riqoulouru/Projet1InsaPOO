@@ -32,7 +32,9 @@ public class Cuisine extends Thread{
             try {
                 if (commandeEnCours == null || commandeEnCours.getStatutCommande() == 2 ) {
                     lancerPreparationCommande();
-                } else {
+                    System.out.println("test1");
+                } else if(commandeEnCours != null && commandeEnCours.getStatutCommande() != 2){
+                    System.out.println("test2");
                     commandeEnCours.calculerTemps();
                     double tempsPrep = commandeEnCours.getTempsCommande();
 
@@ -42,7 +44,8 @@ public class Cuisine extends Thread{
 
                             Thread.sleep((long) tempsPourUnPourcent );
                             commandeEnCours.setPourcentageAvancement(commandeEnCours.getPourcentageAvancement() + 1);
-                                System.out.println("Commande id : " + commandeEnCours.getIdCommande() + " à " + commandeEnCours.getPourcentageAvancement());
+//                            System.out.println(commandeEnCours.getPourcentageAvancement());
+                            System.out.println("Commande id : " + commandeEnCours.getIdCommande() + " à " + commandeEnCours.getPourcentageAvancement());
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -51,13 +54,21 @@ public class Cuisine extends Thread{
                 }
             } catch (Exception e) {
 //                e.printStackTrace();
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
+                checkIfWait();
+            }
+        }
+    }
+
+    public void checkIfWait(){
+        if(commandesEnAttenteDePreparation.size() == 0){
+            try {
                 System.out.print((char) 27 + "[31m");
                 System.out.println("\n Cuisine : En attente d'une commande \n");
+                synchronized (commandesEnAttenteDePreparation){
+                    commandesEnAttenteDePreparation.wait();
+                }
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
         }
     }

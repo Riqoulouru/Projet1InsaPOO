@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Commande implements Serializable {
     private static int lastId = -1;
-    private int idCommande;
+    private final int idCommande;
     List<Plat> platList;
     List<Boisson> boissonList;
     List<Accompagnement> accompagnementList;
@@ -46,9 +46,6 @@ public class Commande implements Serializable {
         }));
         menuList.forEach((a) -> {
             System.out.println(a.getAccompagnement().getNom());
-
-
-
             a.getAccompagnement().getIngredientlist().forEach((i) -> {
                 addTempsCommande(i.getTempsCuisson());
                 System.out.println(i.getNom());

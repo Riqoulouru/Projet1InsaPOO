@@ -1,5 +1,7 @@
 package com.example.Projet1InsaPOO.Model;
 
+import com.example.Projet1InsaPOO.Projet1InsaPooApplication;
+
 import java.io.*;
 import java.util.*;
 
@@ -9,26 +11,32 @@ import java.util.*;
  *  - Le fichier SAVE correspond en gros à une mini BDD
  *      Comprennant : les différents aliments / plats / Boisson ... Et les clients.
  */
+
 public class Main {
+
     public static Client clientConnected = null;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-
+        Projet1InsaPooApplication.initiliazeAllElements();
 
         Map<Integer,String> accompagnementMap = getSavesByPath("Save/Accompagnement/");
         Map<Integer,String> platMap = getSavesByPath("Save/Plat/");
         Map<Integer,String> boissonMap = getSavesByPath("Save/Boisson/");
 
-        List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
-        LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
+        final List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
+        final LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
+
+        List<Cuisine> cuisineList = new ArrayList<>();
 
         Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
         Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
         Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
 
-        cuisine0.start();
-        cuisine1.start();
-        cuisine2.start();
+        cuisineList.add(cuisine0);
+        cuisineList.add(cuisine1);
+        cuisineList.add(cuisine2);
+
+        cuisineList.forEach(Thread::start);
 
         Commande commande;
 
@@ -72,7 +80,14 @@ public class Main {
                         System.out.println("Le prix de la commande est de " + commande.getPrixTotal());
                         clientConnected.addToHistorique(commande);
                         clientConnected.saveItem();
-                        commandesEnAttenteDePreparation.add(commande);
+
+                        synchronized (commandesEnAttenteDePreparation){
+                            commandesEnAttenteDePreparation.add(commande);
+                            commandesEnAttenteDePreparation.notifyAll();
+//                        cuisineList.get(0).notify();
+                        }
+
+
                         login = false;
                         System.out.println("La commande a bien était payer, le temps de préparation de la commande est estimé à " + commande.getTempsCommande() + " minutes");
                         System.out.println("""
@@ -108,7 +123,7 @@ public class Main {
 //        Map<Integer,String> commandMap = new HashMap<>();
         int var = 0;
 
-        Map<Integer,Object> commandMap = new HashMap<>();
+        Map<Integer,Produit> commandMap = new HashMap<>();
 
         for (Boisson b : commande.getBoissonList()){
             commandMap.put(var,b);
@@ -131,47 +146,31 @@ public class Main {
         if(var == 0) {
             System.out.println("Votre commande est vide");
         } else {
-            switch (rep) {
-                case 1 -> {
-                    int repElementASuppr;
-                    System.out.println("Que voulez-vous supprimer ?");
-                    commandMap.forEach((i, s) -> System.out.println(i + " " + s.toString()));
-                    System.out.println(commandMap.size() + " annuler la suppression");
+            if(rep == 1){
+                int repElementASuppr;
+                System.out.println("Que voulez-vous supprimer ?");
+                commandMap.forEach((i, s) -> System.out.println(i + " " + s.getAffichageProduit()));
+                System.out.println(commandMap.size() + " annuler la suppression");
 
-                    try {
-                        repElementASuppr = Integer.valueOf(sc.nextLine());
-                    } catch (Exception e) {
-                        repElementASuppr = 0;
-                    }
-
-
-
-                    int boissonSize = commande.getBoissonList().size();
-                    int platSize = commande.getPlatList().size();
-                    int accompagnementSize = commande.getAccompagnementList().size();
-                    int menuSize = commande.getMenuList().size();
-
-
-                    if (repElementASuppr != commandMap.size()) {
-
-                        if(commandMap.get(repElementASuppr) instanceof Boisson) commande.getBoissonList().remove(repElementASuppr);
-                        if(commandMap.get(repElementASuppr) instanceof Plat) commande.getPlatList().remove(repElementASuppr - commande.getBoissonList().size());
-                        if(commandMap.get(repElementASuppr) instanceof Accompagnement) commande.getAccompagnementList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size());
-                        if(commandMap.get(repElementASuppr) instanceof Menu) commande.getMenuList().remove(repElementASuppr - (commande.getBoissonList().size() + commande.getPlatList().size() + commande.getAccompagnementList().size()));
-
-//                        if (repElementASuppr > boissonSize && repElementASuppr <= boissonSize + platSize && platSize != 0)
-//                            commande.getPlatList().remove(repElementASuppr - commande.getBoissonList().size());
-//                        if (repElementASuppr > boissonSize + platSize && repElementASuppr <= accompagnementSize + boissonSize + platSize && accompagnementSize != 0)
-//                            commande.getAccompagnementList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size());
-//                        if (repElementASuppr > accompagnementSize + boissonSize + platSize && repElementASuppr <= menuSize + accompagnementSize + boissonSize + platSize)
-//                            commande.getMenuList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size() + commande.getAccompagnementList().size());
-                    }
-
-                    System.out.println(commandMap.get(repElementASuppr) + " a été supprimé de la commande");
-
+                try {
+                    repElementASuppr = Integer.valueOf(sc.nextLine());
+                } catch (Exception e) {
+                    repElementASuppr = 0;
                 }
+
+                if (repElementASuppr != commandMap.size()) {
+
+                    if(commandMap.get(repElementASuppr) instanceof Boisson) commande.getBoissonList().remove(repElementASuppr);
+                    if(commandMap.get(repElementASuppr) instanceof Plat) commande.getPlatList().remove(repElementASuppr - commande.getBoissonList().size());
+                    if(commandMap.get(repElementASuppr) instanceof Accompagnement) commande.getAccompagnementList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size());
+                    if(commandMap.get(repElementASuppr) instanceof Menu) commande.getMenuList().remove(repElementASuppr - (commande.getBoissonList().size() + commande.getPlatList().size() + commande.getAccompagnementList().size()));
+                }
+
+                System.out.println(commandMap.get(repElementASuppr) + " a été supprimé de la commande");
+
             }
         }
+
     }
 
     public static Map<Integer,String> getSavesByPath(String path){
@@ -212,7 +211,7 @@ public class Main {
             return;
         } else {
             try {
-                menu.setPlat(Plat.getPlatByName(platMap.get(rep)));
+                menu.setPlat((Plat) Plat.getAlimentByName("Save/Plat/",platMap.get(rep)));
                 System.out.println(platMap.get(rep) + " ajouté au menu !");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -234,7 +233,8 @@ public class Main {
             return;
         } else {
             try {
-                menu.setAccompagnement(Accompagnement.getAccompagnementByName(accompagnementMap.get(rep)));
+//                menu.setAccompagnement(Accompagnement.getAccompagnementByName(accompagnementMap.get(rep)));
+                menu.setAccompagnement((Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",accompagnementMap.get(rep)));
                 System.out.println(accompagnementMap.get(rep) + " ajouté au menu !");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -255,7 +255,8 @@ public class Main {
             return;
         } else {
             try {
-                menu.setBoisson(Boisson.getBoissonByName(boissonMap.get(rep)));
+//                menu.setBoisson(Boisson.getBoissonByName(boissonMap.get(rep)));
+                menu.setBoisson((Boisson) Boisson.getAlimentByName("Save/Boisson/",boissonMap.get(rep)));
                 System.out.println(boissonMap.get(rep) + " ajouté au menu !");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -278,7 +279,7 @@ public class Main {
         int var = 0;
         for(int i =0; i < map.size(); i++){
             try {
-                if(!Accompagnement.getAccompagnementByName(map.get(i)).isOnlyMenu()) {
+                if(!((Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",map.get(i))).isOnlyMenu()) {
                     finalMap.put(var, map.get(i));
                     var++;
                 }
@@ -297,7 +298,7 @@ public class Main {
 
         if (rep < finalMap.size() && rep >= 0 ) {
             try {
-                commande.accompagnementList.add(Accompagnement.getAccompagnementByName(finalMap.get(rep)));
+                commande.accompagnementList.add((Accompagnement) Accompagnement.getAlimentByName("Save/Accompagnement/",finalMap.get(rep)));
                 System.out.println(finalMap.get(rep) + " ajouter à la commande");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -398,7 +399,7 @@ public class Main {
         int var = 0;
         for(int i =0; i < map.size(); i++){
             try {
-                if(!Plat.getPlatByName(map.get(i)).isOnlyMenu()) {
+                if(!((Plat) Plat.getAlimentByName("Save/Plat/",map.get(i))).isOnlyMenu()) {
                     finalMap.put(var, map.get(i));
                     var++;
                 }
@@ -417,7 +418,7 @@ public class Main {
 
         if (rep < finalMap.size() && rep >= 0) {
             try {
-                commande.platList.add(Plat.getPlatByName(finalMap.get(rep)));
+                commande.platList.add((Plat) Plat.getAlimentByName("Save/Plat/",finalMap.get(rep)));
                 System.out.println(finalMap.get(rep) + " ajouter à la commande");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -441,7 +442,7 @@ public class Main {
 
         if (rep < map.size() && rep >= 0) {
             try {
-                commande.boissonList.add(Boisson.getBoissonByName(map.get(rep)));
+                commande.boissonList.add((Boisson) Boisson.getAlimentByName("Save/Boisson/",map.get(rep)));
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

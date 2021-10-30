@@ -2,7 +2,7 @@ package com.example.Projet1InsaPOO.Model;
 
 import java.io.Serializable;
 
-public class Menu implements Serializable {
+public class Menu implements Serializable,Produit {
 
     private Plat plat;
     private Boisson boisson;
@@ -34,11 +34,10 @@ public class Menu implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Menu{" +
-                "plat=" + plat.getNom() +
-                ", boisson=" + boisson.getNom() +
-                ", accompagnement=" + accompagnement.getNom() +
-                '}';
+    public String getAffichageProduit() {
+        return "Menu : " +
+                " plat : " + plat.getNom() +
+                " boisson : " + boisson.getNom() +
+                " accompagnement : " + accompagnement.getNom();
     }
 }
