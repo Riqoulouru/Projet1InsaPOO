@@ -9,11 +9,13 @@ public class Cuisine extends Thread{
     private LinkedList<Commande> commandesEnAttenteDePreparation;
     private Commande commandeEnCours;
     private boolean arret;
+    private double tempsAttente;
 
     public Cuisine(List<Commande> commandesEnCoursDePreparation, LinkedList<Commande> commandesEnAttenteDePreparation) {
         this.commandesEnCoursDePreparation = commandesEnCoursDePreparation;
         this.commandesEnAttenteDePreparation = commandesEnAttenteDePreparation;
         arret = true;
+        tempsAttente = 0;
     }
 
 
@@ -32,7 +34,9 @@ public class Cuisine extends Thread{
             try {
                 if (commandeEnCours == null || commandeEnCours.getStatutCommande() == 2 ) {
                     lancerPreparationCommande();
-                } else {
+                    System.out.println("test1");
+                } else if(commandeEnCours != null && commandeEnCours.getStatutCommande() != 2){
+                    System.out.println("test2");
                     commandeEnCours.calculerTemps();
                     double tempsPrep = commandeEnCours.getTempsCommande();
 
@@ -51,15 +55,32 @@ public class Cuisine extends Thread{
                 }
             } catch (Exception e) {
 //                e.printStackTrace();
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                System.out.print((char) 27 + "[31m");
-                System.out.println("\n Cuisine : En attente d'une commande \n");
+                checkIfWait();
             }
         }
+    }
+
+    public void checkIfWait(){
+        if(commandesEnAttenteDePreparation.size() == 0){
+            try {
+                System.out.print((char) 27 + "[31m");
+                System.out.println("\n Cuisine : En attente d'une commande \n");
+                synchronized (commandesEnAttenteDePreparation){
+                    commandesEnAttenteDePreparation.wait();
+                }
+
+
+
+
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+//        notifyAll();
+    }
+
+    public void setTempsAttente(double tempsAttente) {
+        this.tempsAttente = tempsAttente;
     }
 
     public void arreter(){

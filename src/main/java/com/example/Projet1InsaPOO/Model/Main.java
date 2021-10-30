@@ -19,16 +19,20 @@ public class Main {
         Map<Integer,String> platMap = getSavesByPath("Save/Plat/");
         Map<Integer,String> boissonMap = getSavesByPath("Save/Boisson/");
 
-        List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
-        LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
+        final List<Commande> commandesEnCoursDePreparation = new ArrayList<>();
+        final LinkedList<Commande> commandesEnAttenteDePreparation = new LinkedList<>();
+
+        List<Cuisine> cuisineList = new ArrayList<>();
 
         Cuisine cuisine0 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
         Cuisine cuisine1 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
         Cuisine cuisine2 = new Cuisine(commandesEnCoursDePreparation,commandesEnAttenteDePreparation);
 
-        cuisine0.start();
-        cuisine1.start();
-        cuisine2.start();
+        cuisineList.add(cuisine0);
+        cuisineList.add(cuisine1);
+        cuisineList.add(cuisine2);
+
+        cuisineList.forEach(Thread::start);
 
         Commande commande;
 
@@ -72,7 +76,14 @@ public class Main {
                         System.out.println("Le prix de la commande est de " + commande.getPrixTotal());
                         clientConnected.addToHistorique(commande);
                         clientConnected.saveItem();
-                        commandesEnAttenteDePreparation.add(commande);
+
+                        synchronized (commandesEnAttenteDePreparation){
+                            commandesEnAttenteDePreparation.add(commande);
+                            commandesEnAttenteDePreparation.notifyAll();
+//                        cuisineList.get(0).notify();
+                        }
+
+
                         login = false;
                         System.out.println("La commande a bien était payer, le temps de préparation de la commande est estimé à " + commande.getTempsCommande() + " minutes");
                         System.out.println("""
