@@ -9,7 +9,7 @@ public class Cuisine extends Thread{
     private LinkedList<Commande> commandesEnAttenteDePreparation;
     private Commande commandeEnCours;
     private boolean arret;
-    private String nom;
+    private final String nom;
 
     public Cuisine(List<Commande> commandesEnCoursDePreparation, LinkedList<Commande> commandesEnAttenteDePreparation, String nom) {
         this.commandesEnCoursDePreparation = commandesEnCoursDePreparation;
