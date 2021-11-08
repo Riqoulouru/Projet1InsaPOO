@@ -40,6 +40,7 @@ public class Cuisine extends Thread{
                     commandeEnCours.calculerTemps();
                     double tempsPrep = commandeEnCours.getTempsCommande();
 
+
                     double tempsPourUnPourcent = tempsPrep / 100 * 6000;
                     while (commandeEnCours.getPourcentageAvancement() < 100) {
                         try {
