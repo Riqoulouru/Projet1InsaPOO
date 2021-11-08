@@ -106,6 +106,32 @@
 
         }
 
+        function kitchenStatus() {
+
+            $.ajax({
+                type: "GET",
+                url : "/kitchen/status",
+                success : function(data, textStatus, xhr) {
+                    if(xhr.status == 200){
+
+                        console.log(data);
+
+                    }
+                },
+                error : function(request, error) {
+                    console.error(error);
+                    console.debug(request);
+                }
+            });
+
+        }
+
+        $(document).ready( function () {
+
+            setInterval(function(){ kitchenStatus(); }, 3000);
+
+        })
+
 
         /*]]>*/
     </script>
