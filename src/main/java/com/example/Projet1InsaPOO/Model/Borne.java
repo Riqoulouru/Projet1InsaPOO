@@ -131,11 +131,6 @@ public class Borne {
         }
 
 
-        /*
-         * TODO : Traitement avec cuisine
-         *  commandesEnAttenteDePreparation.add(commande);
-         */
-
         return "Payement de "+ commande.getPrixTotal() +"€ accepté, votre commande a bien été prise en compte. <br>" +
                 "Attente estimé : "+ commande.getTempsCommande() + "minutes <br><br>" +
                 "Sur la page de connexion cliquez sur avancement pour voir l'avancée de voter commande " + "<br>" +

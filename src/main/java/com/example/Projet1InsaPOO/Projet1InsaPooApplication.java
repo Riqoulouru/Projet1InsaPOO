@@ -11,7 +11,7 @@ import java.util.List;
 
 @SpringBootApplication
 public class Projet1InsaPooApplication {
-	public static final List<Cuisine> cuisines = new ArrayList<>();
+	public static List<Cuisine> cuisines = new ArrayList<>();
 
 
 	public static void main(String[] args) throws IOException {

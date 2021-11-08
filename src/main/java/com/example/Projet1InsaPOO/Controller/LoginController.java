@@ -1,12 +1,9 @@
 package com.example.Projet1InsaPOO.Controller;
 
-import com.example.Projet1InsaPOO.DTO.CuisineDTO;
-import com.example.Projet1InsaPOO.Model.Boisson;
+import com.example.Projet1InsaPOO.DTO.CommandeDTO;
 import com.example.Projet1InsaPOO.Model.Borne;
-import com.example.Projet1InsaPOO.Model.Commande;
 import com.example.Projet1InsaPOO.Model.Cuisine;
 import com.example.Projet1InsaPOO.Projet1InsaPooApplication;
-import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -46,35 +41,21 @@ public class LoginController {
 
 
     @GetMapping("/kitchen/status")
-    public ResponseEntity<CuisineDTO> getKitchenStatus() {
+    public ResponseEntity<CommandeDTO> getKitchenStatus() {
 
-        CuisineDTO cuisineDTO = new CuisineDTO();
+        CommandeDTO commandeDTO = new CommandeDTO();
 
-        /*
 
-        for (Cuisine cuisine : Projet1InsaPooApplication.cuisines) {
+        for(Cuisine cuisine : Projet1InsaPooApplication.cuisines) {
 
-            if(cuisine.getCommandesEnAttenteDePreparation() != null) {
-                System.out.println("oui : " + cuisine.getCommandesEnAttenteDePreparation().size());
-                for(Commande commande : cuisine.getCommandesEnAttenteDePreparation()) {
-                    cuisineDTO.addCommandeEnAttenteDePreparation(commande);
+            if(cuisine.getCommandeEnCours() != null) {
+                if (!commandeDTO.getCommandesEnCours().contains(cuisine.getCommandeEnCours())) {
+                    commandeDTO.addCommandeEnCours(cuisine.getCommandeEnCours());
                 }
             }
-
-            if(cuisine.getCommandesEnCoursDePreparation() != null) {
-                System.out.println("non : " + cuisine.getCommandesEnCoursDePreparation().size());
-                for (Commande commande : cuisine.getCommandesEnCoursDePreparation()) {
-                    cuisineDTO.addCommandeEnCoursDePreparation(commande);
-                }
-            }
-            System.out.println("--------------");
-
         }
 
-         */
-
-
-        return ResponseEntity.ok(cuisineDTO);
+        return ResponseEntity.ok(commandeDTO);
     }
 
 }

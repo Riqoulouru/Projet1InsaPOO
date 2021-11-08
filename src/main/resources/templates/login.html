@@ -106,6 +106,7 @@
 
         }
 
+        //Récupérer les commandes en cours pour afficher les status
         function kitchenStatus() {
 
             $.ajax({
@@ -114,7 +115,25 @@
                 success : function(data, textStatus, xhr) {
                     if(xhr.status == 200){
 
-                        console.log(data);
+                        //Vider la div
+                        $("#kitchenStatus").empty();
+
+                        //afficher les données
+                        for(let i = 0 ; i<data.commandesEnCours.length ; i++) {
+                            if(data.commandesEnCours[i].pourcentageAvancement >= 100) {
+                                $("#kitchenStatus").append(`
+                                <p id="${i}"> Commande : ${data.commandesEnCours[i].idCommande} à 100%</p>
+                                `);
+                               $(`#${i}`).css('color', 'green');
+                            }
+                            else {
+                                $("#kitchenStatus").append(`
+                                <p id="${i}"> Commande : ${data.commandesEnCours[i].idCommande} à ${data.commandesEnCours[i].pourcentageAvancement}%</p>
+                                `);
+                                $(`#${i}`).css('color', 'red');
+                            }
+                        }
+
 
                     }
                 },
@@ -128,6 +147,7 @@
 
         $(document).ready( function () {
 
+            kitchenStatus();
             setInterval(function(){ kitchenStatus(); }, 3000);
 
         })
@@ -199,8 +219,14 @@
     </div>
 
     <div class="etatCuisine">
+
         <h1> Etat des commandes : </h1>
         <hr>
+
+        <div id="kitchenStatus">
+
+        </div>
+
 
     </div>
 
