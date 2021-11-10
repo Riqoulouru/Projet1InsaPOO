@@ -78,7 +78,6 @@ public class Main {
                     case 5 -> {
                         commande.calculerTemps();
                         commande.calculerPrix();
-                        System.out.println("Le prix de la commande est de " + commande.getPrixTotal());
                         clientConnected.addToHistorique(commande);
                         clientConnected.saveItem();
 

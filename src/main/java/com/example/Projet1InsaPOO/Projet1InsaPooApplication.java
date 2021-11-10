@@ -18,7 +18,7 @@ public class Projet1InsaPooApplication {
 		SpringApplication.run(Projet1InsaPooApplication.class, args);
 
 		//Création de la "BDD"
-		initiliazeAllElements();
+		//initiliazeAllElements();
 
 
 		List<Commande> commandesEnCoursDePreparation = new ArrayList<>();

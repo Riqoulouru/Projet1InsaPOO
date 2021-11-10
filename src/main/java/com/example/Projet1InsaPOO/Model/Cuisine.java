@@ -20,7 +20,6 @@ public class Cuisine extends Thread{
 
 
     public synchronized void lancerPreparationCommande(){
-//        System.out.println(commandesEnAttenteDePreparation.size());
         commandeEnCours = commandesEnAttenteDePreparation.getFirst();
         commandesEnAttenteDePreparation.remove(commandesEnAttenteDePreparation.getFirst());
         commandeEnCours.setStatutCommande(1);
@@ -34,9 +33,7 @@ public class Cuisine extends Thread{
             try {
                 if (commandeEnCours == null || commandeEnCours.getStatutCommande() == 2 ) {
                     lancerPreparationCommande();
-                    System.out.println("test1");
                 } else if(commandeEnCours != null && commandeEnCours.getStatutCommande() != 2){
-                    System.out.println("test2");
                     commandeEnCours.calculerTemps();
                     double tempsPrep = commandeEnCours.getTempsCommande();
 
@@ -47,7 +44,6 @@ public class Cuisine extends Thread{
 
                             Thread.sleep((long) tempsPourUnPourcent );
                             commandeEnCours.setPourcentageAvancement(commandeEnCours.getPourcentageAvancement() + 1);
-//                            System.out.println(commandeEnCours.getPourcentageAvancement());
                             System.out.println("(Cuisine : "+ nom + ") Commande id : " + commandeEnCours.getIdCommande() + " à " + commandeEnCours.getPourcentageAvancement() + "%");
                         } catch (InterruptedException e) {
                             e.printStackTrace();

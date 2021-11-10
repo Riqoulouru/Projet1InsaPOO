@@ -133,7 +133,7 @@ public class Borne {
 
         return "Payement de "+ commande.getPrixTotal() +"€ accepté, votre commande a bien été prise en compte. <br>" +
                 "Attente estimé : "+ commande.getTempsCommande() + "minutes <br><br>" +
-                "Sur la page de connexion cliquez sur avancement pour voir l'avancée de voter commande " + "<br>" +
+                "<strong> Votre commande est la numéro : " + commande.getIdCommande() + "</strong><br><br>" +
                 "Appuyer sur confirmer pour être déconnecté. <br>";
     }
 

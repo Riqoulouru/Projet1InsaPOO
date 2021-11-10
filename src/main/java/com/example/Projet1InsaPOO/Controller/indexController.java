@@ -33,7 +33,6 @@ public class indexController {
     public ResponseEntity<String> addPlatToOrder(@PathVariable("i") int i) throws IOException, ClassNotFoundException {
 
         Borne.getInstance().addPlatToOrder(i);
-        System.out.println(Borne.getInstance().getCommande().getPlatList().get(0).toString());
         return ResponseEntity.ok(Borne.getInstance().getPlatMap().get(i).getNom());
     }
 
@@ -42,8 +41,7 @@ public class indexController {
     public ResponseEntity<String> addAccompagnementToOrder(@PathVariable("i") int i) throws IOException, ClassNotFoundException {
 
         Borne.getInstance().addAccompagnementToOrder(i);
-        System.out.println(Borne.getInstance().getCommande().getAccompagnementList().get(0).toString());
-        return ResponseEntity.ok(Borne.getInstance().getAccompagnementMap().get(i).getNom());
+         return ResponseEntity.ok(Borne.getInstance().getAccompagnementMap().get(i).getNom());
     }
 
 
@@ -51,7 +49,6 @@ public class indexController {
     public ResponseEntity<String> addBoissonToOrder(@PathVariable("i") int i) throws IOException, ClassNotFoundException {
 
         Borne.getInstance().addBoissonToOrder(i);
-        System.out.println(Borne.getInstance().getCommande().getBoissonList().get(0).toString());
         return ResponseEntity.ok(Borne.getInstance().getBoissonMap().get(i).getNom());
     }
 
@@ -61,7 +58,6 @@ public class indexController {
                                                     @PathVariable("boisson") int boisson) throws IOException, ClassNotFoundException {
 
         Borne.getInstance().addMenuToOrder(plat, accompagnement, boisson);
-        System.out.println(Borne.getInstance().getCommande().getMenuList().get(0).getPlat().toString());
         return ResponseEntity.ok(Borne.getInstance().getBoissonMap().get(0).getNom());
     }
 
