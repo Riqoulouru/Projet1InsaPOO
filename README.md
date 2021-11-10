@@ -12,4 +12,4 @@ Evidement pour garder un maximum de cohérence avec le projet de base tout est f
   - Envoie et réception des données (requête AJAX pour pouvoir ensuite traiter dans le back)
   - Affichage des données (traitement pour pouvoir afficher correctement les données)
   
-Toutes cette partie front a été réalisée avec JQuery.
+Toute cette partie front a été réalisée avec JQuery.
