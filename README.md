@@ -13,3 +13,9 @@ Evidement pour garder un maximum de cohérence avec le projet de base tout est f
   - Affichage des données (traitement pour pouvoir afficher correctement les données)
   
 Toute cette partie front a été réalisée avec JQuery.
+
+
+# Informations complémentaires
+
+  - La classe Main n'est pas utilisée, elle correspondait au mode console avant l'interface graphique
+  - Il y a toujours un affichage plus précis de la cuisine dans la console
