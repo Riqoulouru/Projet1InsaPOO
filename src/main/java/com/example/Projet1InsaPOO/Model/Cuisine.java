@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Cuisine extends Thread{
 
-    private List<Commande> commandesEnCoursDePreparation;
-    private LinkedList<Commande> commandesEnAttenteDePreparation;
+    private final List<Commande> commandesEnCoursDePreparation;
+    private final LinkedList<Commande> commandesEnAttenteDePreparation;
     private Commande commandeEnCours;
     private boolean arret;
     private final String nom;
@@ -18,7 +18,7 @@ public class Cuisine extends Thread{
         this.nom = nom;
     }
 
-
+    //permet de prendre la commande la plus ancienne qui est en attente, et de commencer sa préparation
     public synchronized void lancerPreparationCommande(){
         commandeEnCours = commandesEnAttenteDePreparation.getFirst();
         commandesEnAttenteDePreparation.remove(commandesEnAttenteDePreparation.getFirst());
@@ -27,6 +27,11 @@ public class Cuisine extends Thread{
         notifyAll();
     }
 
+    /**
+     * Ici c'est le main des cuisines
+     * une cuisine attends tant qu'il n'y a pas de commandes en attente et qu'elle n'est pas déjà en train de préparer un plat
+     * quand elle prépare un plat, elle met à jour en directe l'avancement de la commande
+     */
     @Override
     public void run() {
         while (arret) {
@@ -52,12 +57,12 @@ public class Cuisine extends Thread{
                     commandeEnCours.setStatutCommande(2);
                 }
             } catch (Exception e) {
-//                e.printStackTrace();
                 checkIfWait();
             }
         }
     }
 
+    //La fonction qui permet aux cuisines d'attendre qu'une commande arrive
     public void checkIfWait(){
         if(commandesEnAttenteDePreparation.size() == 0){
             try {
@@ -83,16 +88,8 @@ public class Cuisine extends Thread{
         return commandesEnCoursDePreparation;
     }
 
-    public void setCommandesEnCoursDePreparation(List<Commande> commandesEnCoursDePreparation) {
-        this.commandesEnCoursDePreparation = commandesEnCoursDePreparation;
-    }
-
     public LinkedList<Commande> getCommandesEnAttenteDePreparation() {
         return commandesEnAttenteDePreparation;
-    }
-
-    public void setCommandesEnAttenteDePreparation(LinkedList<Commande> commandesEnAttenteDePreparation) {
-        this.commandesEnAttenteDePreparation = commandesEnAttenteDePreparation;
     }
 
     public boolean isArret() {

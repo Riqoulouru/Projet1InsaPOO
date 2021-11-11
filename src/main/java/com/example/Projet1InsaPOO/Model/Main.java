@@ -10,6 +10,10 @@ import java.util.*;
  * Attention :
  *  - Le fichier SAVE correspond en gros à une mini BDD
  *      Comprennant : les différents aliments / plats / Boisson ... Et les clients.
+ *
+ *  la fonction Projet1InsaPooApplication.initiliazeAllElements(); permet d'initialiser les fichiers pour la base de données.
+ *  elle est à executé si le pull du git n'a pas bien récupérer les fichier devant être dans Save (cf readme)
+ *
  */
 
 public class Main {
@@ -17,6 +21,7 @@ public class Main {
     public static Client clientConnected = null;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+
 //        Projet1InsaPooApplication.initiliazeAllElements();
 
         Map<Integer,String> accompagnementMap = getSavesByPath("Save/Accompagnement/");
