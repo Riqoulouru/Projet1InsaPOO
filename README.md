@@ -19,3 +19,9 @@ Toute cette partie front a été réalisée avec JQuery.
 
   - La classe Main n'est pas utilisée, elle correspondait au mode console avant l'interface graphique
   - Il y a toujours un affichage plus précis de la cuisine dans la console
+
+
+# Attention : Si dans le dossier "Save" il n'y a pas : ![image](https://user-images.githubusercontent.com/17967215/141336990-be169ee9-7954-480f-ac72-198051c4b755.png)
+  alors il faudra executer la fonction initiliazeAllElements() contenue dans la classe Projet1InsaPooApplication
+  Cette fonction est déjà en commentaire dans le code, il suffit donc de la décommenté avant de lancer le programme.
+  
