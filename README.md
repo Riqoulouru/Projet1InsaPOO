@@ -14,6 +14,8 @@ Evidement pour garder un maximum de cohérence avec le projet de base tout est f
   
 Toute cette partie front a été réalisée avec JQuery.
 
+# Accèder à l'interface 
+  Pour accèder à l'interface graphique, une fois l'application lancé, il vous suffit d'allumer votre naviguateur internet et d'aller sur http://localhost:8080/
 
 # Informations complémentaires
 
