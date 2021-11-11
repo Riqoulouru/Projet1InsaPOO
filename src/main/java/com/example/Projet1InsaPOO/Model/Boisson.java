@@ -4,19 +4,8 @@ import java.io.*;
 
 public class Boisson extends Aliment implements Serializable{
 
-    private double prix;
-
     public Boisson(String nom, double prix) {
-        super(nom);
-        this.prix = prix;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
+        super(nom, prix);
     }
 
 //    public static Boisson getBoissonByName(String name) throws IOException, ClassNotFoundException {

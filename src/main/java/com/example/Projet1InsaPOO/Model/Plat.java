@@ -9,12 +9,10 @@ import java.util.List;
 public class Plat extends Aliment implements Serializable {
 
     private List<Ingredient> ingredientlist;
-    private double prix;
     private boolean onlyMenu;
 
     public Plat(String nom, double prix, List<Ingredient> ingredientlist, boolean onlyMenu){
-        super(nom);
-        this.prix = prix;
+        super(nom, prix);
         this.ingredientlist = ingredientlist;
         this.onlyMenu = onlyMenu;
     }
@@ -26,14 +24,6 @@ public class Plat extends Aliment implements Serializable {
 
     public void setIngredientlist(List<Ingredient> ingredientlist) {
         this.ingredientlist = ingredientlist;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
     }
 
     public boolean isOnlyMenu() {
