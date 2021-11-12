@@ -139,10 +139,12 @@ public class Main {
             commandMap.put(var,b);
             var++;
         }
+
         for (Plat p : commande.getPlatList()){
             commandMap.put(var,p);
             var++;
         }
+
         for (Accompagnement a : commande.getAccompagnementList()){
             commandMap.put(var,a);
             var++;
@@ -168,15 +170,17 @@ public class Main {
                     repElementASuppr = 0;
                 }
 
-                if (repElementASuppr != commandMap.size()) {
+                if (repElementASuppr < commandMap.size()) {
 
                     if(commandMap.get(repElementASuppr) instanceof Boisson) commande.getBoissonList().remove(repElementASuppr);
                     if(commandMap.get(repElementASuppr) instanceof Plat) commande.getPlatList().remove(repElementASuppr - commande.getBoissonList().size());
                     if(commandMap.get(repElementASuppr) instanceof Accompagnement) commande.getAccompagnementList().remove(repElementASuppr - commande.getBoissonList().size() + commande.getPlatList().size());
                     if(commandMap.get(repElementASuppr) instanceof Menu) commande.getMenuList().remove(repElementASuppr - (commande.getBoissonList().size() + commande.getPlatList().size() + commande.getAccompagnementList().size()));
+
+                    System.out.println(commandMap.get(repElementASuppr) + " a été supprimé de la commande");
                 }
 
-                System.out.println(commandMap.get(repElementASuppr) + " a été supprimé de la commande");
+
 
             }
         }
@@ -360,8 +364,13 @@ public class Main {
                     Que voulez vous faire :
                     1 : Se connecter
                     2 : Créer un id""");
+            int connection;
+            try{
+                connection = Integer.parseInt(sc.nextLine());
+            } catch (Exception ignored){
+                connection = 0;
+            }
 
-            int connection = Integer.parseInt(sc.nextLine());
             while (connection != 1 && connection != 2) {
                 System.out.println("Veuillez indiquer une réponse valable.");
                 connection = Integer.parseInt(sc.nextLine());
